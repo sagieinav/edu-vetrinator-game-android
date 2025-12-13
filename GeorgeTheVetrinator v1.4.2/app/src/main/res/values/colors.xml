@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--  BASIC COLOR PALETTE  -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="yellow">#FFC300</color>
+    <color name="teal">#50BCB2</color>
+    <color name="blue">#2282e2</color>
+    <color name="apple_blue">#007aff</color>
+    <color name="dark_blue">#004fa8</color>
+    <color name="red">#FF1734</color>
+    <color name="magenta">#FF1642</color>
+
+<!--  PARLIAMENT-THEMED COLORS  -->
+    <color name="brown_george">#4b2b10</color>
+    <color name="blue_parliament">#90b0c1</color>
+    <color name="blue_parliament_stroke">#7E9CAB</color>
+    <color name="blue_parliament_frosted">#8090b0c1</color>
+    <color name="offwhite">#fcf3e0</color>
+    <color name="offwhite_stroke">#DED9CC</color>
+
+<!--   USED FOR EFFECTS   -->
+    <color name="glass_white">#BCFFFFFF</color>
+    <color name="shadow_color">#40000000</color>
+    <color name="stroke_color">#3d3c3c</color>
+    <color name="line_separator">#35000000</color>
+</resources>

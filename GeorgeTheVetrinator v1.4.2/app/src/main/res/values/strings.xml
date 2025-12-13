@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">GeorgeTheVetrinator</string>
+
+<!--  LAYOUTS AND ACTIVITIES  -->
+    <string name="normal_mode">Normal Mode</string>
+    <string name="endless_mode">Endless Mode</string>
+    <string name="et_hapali">Et ha\'pali...</string>
+
+<!--  OBSTACLE CRASH MESSAGES  -->
+    <string name="obstacle_neta_crash_msg">אני לא פותח את השק הזה נטע</string>\
+    <string name="obstacle_kid_crash_msg">לא פה ילד, משם הכי הטוב</string>
+    <string name="obstacle_kings_crash_msg">הקלף שאני הכי שונא אותו זה זוג קינג</string>
+    <string name="obstacle_eight_crash_msg">בריבר עוד 8 פטרוזיליה</string>
+    <string name="obstacle_fallback_crash_msg">אווו... את הפלי</string>
+
+<!--  MESSAGES  -->
+    <string name="game_over_msg">Game Over!</string>
+    <string name="vibration_msg">Bzzzzzzzzzzzzzzzzzzzzzzzzzz!</string>
+
+<!--  LOGGING TAGS  -->
+    <string name="log_tag_game_loop">GameLoop</string>
+    <string name="log_tag_game_status">GameStatus</string>
+
+<!--  ACCESSIBILITY DESCRIPTIONS  -->
+    <string name="desc_move_left">Move Left</string>
+    <string name="desc_move_right">Move Right</string>
+
+</resources>

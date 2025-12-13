@@ -1,0 +1,46 @@
+<resources>
+<!-- === HEARTS DASHBOARD (GameActivity) === -->
+    <dimen name="heart_icon_size">40dp</dimen>
+    <dimen name="heart_icon_spacing">6dp</dimen>
+
+    <dimen name="hearts_box_margin">12dp</dimen>
+    <dimen name="hearts_box_padding_h">12dp</dimen>
+    <dimen name="hearts_box_padding_v">8dp</dimen>
+    <dimen name="hearts_box_corner_radius">24dp</dimen>
+    <dimen name="hearts_box_stroke_width">1dp</dimen>
+    <dimen name="hearts_box_elevation">18dp</dimen>
+
+<!-- === SEPARATOR LINE (GameActivity) === -->
+    <dimen name="separator_height">4dp</dimen>
+    <dimen name="separator_margin_h">10dp</dimen>
+
+<!-- === CONTROLS (GameActivity) === -->
+    <dimen name="controls_area_height">130dp</dimen>
+
+    <dimen name="button_width">110dp</dimen>
+    <dimen name="button_margin_side">20dp</dimen>
+    <dimen name="button_margin_bottom">16dp</dimen>
+
+        <!-- Controls icon size vs button size (GameActivity) -->
+        <dimen name="button_internal_padding">8dp</dimen>
+
+<!-- Shadow Offsets -->
+    <dimen name="button_shadow_offset">5dp</dimen>
+    <dimen name="button_shadow_offset_mirrored">-5dp</dimen>
+
+<!-- === APP HEADER (HomeActivity) === -->
+    <dimen name="app_header_size">150dp</dimen>
+    <dimen name="app_title_size">60dp</dimen>
+    <dimen name="app_header_vertical_correction">12dp</dimen>
+    <dimen name="app_header_margin_top">100dp</dimen>
+    <dimen name="app_header_separator_margin">16dp</dimen>
+
+<!-- === MENU BUTTONS (HomeActivity & ResultActivity) === -->
+    <dimen name="menu_buttons_height">100dp</dimen>
+    <dimen name="menu_buttons_margin">20dp</dimen>
+
+<!-- === GAME OVER HEADER (ResultActivity) === -->
+    <dimen name="game_over_margin_top">80dp</dimen>
+    <dimen name="game_over_text_size">120dp</dimen>
+    <dimen name="pali_text_size">40dp</dimen>
+</resources>

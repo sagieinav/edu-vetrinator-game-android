@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_activity_result"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.result.ResultActivity"
+    android:background="@drawable/bg_pattern">
+
+    <!--  CONTROLS BACKGROUND OVERLAY  -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/offwhite"
+        android:alpha="0.5"
+        >
+    </androidx.appcompat.widget.AppCompatImageView>
+
+        <!-- 1. TEXT COLUMN -->
+        <RelativeLayout
+            android:id="@+id/container_game_over"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/game_over_margin_top"
+            >
+
+            <TextView
+                android:id="@+id/tv_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GAME"
+                android:textSize="@dimen/game_over_text_size"
+                android:fontFamily="@font/pixel_purl"
+                android:textColor="@color/brown_george"
+                android:includeFontPadding="false" />
+
+            <TextView
+                android:id="@+id/tv_over"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_game"
+                android:text="OVER"
+                android:textSize="@dimen/game_over_text_size"
+                android:fontFamily="@font/pixel_purl"
+                android:textColor="@color/brown_george"
+                android:includeFontPadding="false"/>
+
+            <TextView
+                android:id="@+id/tv_pali"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_over"
+                android:layout_centerHorizontal="true"
+                android:text="@string/et_hapali"
+                android:textSize="@dimen/pali_text_size"
+                android:fontFamily="@font/pixel_purl"
+                android:textColor="@color/brown_george"
+                android:includeFontPadding="false"/>
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_result_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/container_game_over" >
+
+        <RelativeLayout
+            android:id="@+id/container_result_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/container_home_header"
+            android:layout_centerVertical="true">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_restart"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/menu_buttons_height"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/btn_restart"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:contentDescription="@string/normal_mode"
+                android:layout_margin="@dimen/menu_buttons_margin" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_back_home"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/menu_buttons_height"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/btn_back_home"
+                android:layout_below="@id/btn_restart"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:contentDescription="@string/endless_mode"
+                android:layout_margin="@dimen/menu_buttons_margin" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
