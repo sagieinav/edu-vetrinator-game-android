@@ -46,12 +46,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        normalButtonView.setOnClickListener { view: View -> gameModeSelected(GameMode.NORMAL) }
-        extendedButtonView.setOnClickListener { view: View -> gameModeSelected(GameMode.ENDLESS) }
-    }
-
-    private fun gameModeSelected(gameMode: GameMode) {
-        startGame(gameMode)
+        normalButtonView.setOnClickListener { view: View -> startGame(GameMode.NORMAL) }
+        extendedButtonView.setOnClickListener { view: View -> startGame(GameMode.ENDLESS) }
     }
 
     private fun startGame(gameMode: GameMode) {

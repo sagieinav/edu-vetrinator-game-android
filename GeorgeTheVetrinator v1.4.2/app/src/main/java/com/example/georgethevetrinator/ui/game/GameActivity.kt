@@ -120,7 +120,7 @@ class GameActivity : AppCompatActivity() {
             Log.d(getString(R.string.log_tag_game_status), getString(R.string.game_over_msg))
             timerJob.cancel()
             lifecycleScope.launch {
-                delay(1_000)
+                delay(500)
                 finishGame()
             }
         }
