@@ -5,7 +5,12 @@ This repository contains the source code for **George The Vetrinator**, an Andro
 The app features a pixel-art aesthetic, dynamic obstacle avoidance, and a custom game engine built using Kotlin in Android Studio.
 
 ## 1 Game Demonstration
-...
+### 1.1 Home Screen + Normal Mode + Restart
+https://github.com/user-attachments/assets/22f9efbf-49e5-4ad0-b90f-f80ee0d2989f
+
+### 1.2 Back to Menu + Endless Mode
+https://github.com/user-attachments/assets/740813db-9edd-44a3-bc90-d4e5a6c382c5
+
 
 ## 2 Classes Overview
 
