@@ -15,7 +15,7 @@
 	·
 	<a href="https://github.com/sagieinav/edu-vetrinator-game-android/issues">Request Feature</a>
 	·
-	<a href="#2-demonstration">View Demo</a>
+	<a href="#4-demonstration">View Demo</a>
 </p>
 
   <!-- Single simplified row of key tech badges -->
