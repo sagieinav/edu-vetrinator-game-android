@@ -1,3 +1,5 @@
+<a id="readme-top"></a>
+
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/edu-vetrinator-game-android)](https://github.com/sagieinav/edu-vetrinator-game-android/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/sagieinav/edu-vetrinator-game-android)](https://github.com/sagieinav/edu-vetrinator-game-android/network/members)
@@ -12,7 +14,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/sagieinav/edu-vetrinator-game-android">
-    <img src="https://github.com/user-attachments/assets/f40e2544-97ac-4f3d-ba43-0545080cc45d)" alt="Logo" width="80" height="80">
+    <img src="https://github.com/user-attachments/assets/f40e2544-97ac-4f3d-ba43-0545080cc45d" alt="Logo" width="80" height="80">
   </a>
 
 <h2 align="center">George The Vetrinator</h2>
@@ -66,15 +68,6 @@ This repository contains the source code for George The Vetrinator, an Android a
 The app features a pixel-art aesthetic, dynamic obstacle avoidance, and a custom game engine built using Kotlin in Android Studio.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-### 1.1 Built With
-
-* [![Kotlin][kotlinlang.org]][Kotlin-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- GETTING STARTED -->
