@@ -8,15 +8,19 @@
   <br>
 </h1>
 
+
 <p align="center">
 	<b>An educational Android arcade game featuring dynamic obstacle avoidance and pixel-art aesthetics.</b>
-	<br />
+</p>
+<p align="center">
 	<a href="https://github.com/sagieinav/edu-vetrinator-game-android/issues">Report Bug</a>
-	·
+	•
 	<a href="https://github.com/sagieinav/edu-vetrinator-game-android/issues">Request Feature</a>
-	·
+	•
 	<a href="#4-demonstration">View Demo</a>
 </p>
+
+---
 
   <!-- Single simplified row of key tech badges -->
   <p align="center">
@@ -24,7 +28,6 @@
     <img src="https://img.shields.io/badge/Android-3DDC84?style=flat&logo=android&logoColor=white" alt="Android" />
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License" />
   </p>
-
 
 
 
