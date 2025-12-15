@@ -1,14 +1,11 @@
 <a id="readme-top"></a>
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/edu-vetrinator-game-android)](https://github.com/sagieinav/edu-vetrinator-game-android/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/sagieinav/edu-vetrinator-game-android)](https://github.com/sagieinav/edu-vetrinator-game-android/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/sagieinav/edu-vetrinator-game-android)](https://github.com/sagieinav/edu-vetrinator-game-android/network/members)
 [![GitHub Issues](https://img.shields.io/github/issues/sagieinav/edu-vetrinator-game-android)](https://github.com/sagieinav/edu-vetrinator-game-android/issues)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/sagieinav/edu-vetrinator-game-android)](https://github.com/sagieinav/edu-vetrinator-game-android/pulls)
 
-![Android](https://img.shields.io/badge/Platform-Android-green)
-![Language](https://img.shields.io/badge/Language-Kotlin-purple)
-![Tools](https://img.shields.io/badge/Tools-Android_Studio-blue)
 
 <!-- PROJECT LOGO -->
 <br />
@@ -22,7 +19,9 @@
   <p align="center">
     an Android arcade-style game made for educational purposes
     <br />
-    <a href="https://github.com/sagieinav/edu-vetrinator-game-android"><strong>Explore the docs »</strong></a>
+    ![Android](https://img.shields.io/badge/Platform-Android-green)
+	![Language](https://img.shields.io/badge/Language-Kotlin-purple)
+	![Tools](https://img.shields.io/badge/Tools-Android_Studio-blue)
     <br />
     <br />
     <a href="https://github.com/sagieinav/edu-vetrinator-game-android">View Demo</a>
