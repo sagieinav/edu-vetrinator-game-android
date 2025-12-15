@@ -1,67 +1,166 @@
-# George The Vetrinator
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![project_license][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-This repository contains the source code for **George The Vetrinator**, an Android arcade-style game made for educational purposes
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/sagieinav/edu-vetrinator-game-android">
+    <img src="![[app_icon 1.webp]]" alt="Logo" width="80" height="80">
+  </a>
+
+<h2 align="center">George The Vetrinator</h2>
+
+  <p align="center">
+    an Android arcade-style game made for educational purposes
+    <br />
+    <a href="https://github.com/sagieinav/edu-vetrinator-game-android"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/sagieinav/edu-vetrinator-game-android">View Demo</a>
+    &middot;
+    <a href="https://github.com/sagieinav/edu-vetrinator-game-android/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    &middot;
+    <a href="https://github.com/sagieinav/edu-vetrinator-game-android/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  </p>
+</div>
+
+
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contact">Contact</a></li>
+	<li><a href="#contributors">Contributors</a></li>
+  </ol>
+</details>
+
+
+
+<!-- ABOUT THE PROJECT -->
+## 1 About The Project
+![[SS 15122025 at 18.02.50.png]]
+This repository contains the source code for George The Vetrinator, an Android arcade-style game made for educational purposes
 
 The app features a pixel-art aesthetic, dynamic obstacle avoidance, and a custom game engine built using Kotlin in Android Studio.
 
-## 1 Game Demonstration
-### 1.1 Home Screen + Normal Mode + Restart
-https://github.com/user-attachments/assets/22f9efbf-49e5-4ad0-b90f-f80ee0d2989f
-
-### 1.2 Back to Menu + Endless Mode
-https://github.com/user-attachments/assets/740813db-9edd-44a3-bc90-d4e5a6c382c5
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-## 2 Classes Overview
 
-The project relies on three main Activities and several helper classes to manage game logic.
+### 1.1 Built With
 
-Below is a table detailing the key components and their roles.
+* [![Kotlin][kotlinlang.org]][Kotlin-url]
 
-| Class Name | Type | Description |
-| :--- | :--- | :--- |
-| `HomeActivity` | Activity | The entry point. Handles navigation and game mode selection (Normal/Endless). |
-| `GameActivity` | Activity | The main game screen. Manages UI initialization, sensors (Vibrator), and user input. |
-| `ResultActivity` | Activity | Displays the "Game Over" state and allows the user to restart or return home. |
-| `GameManager` | Class | Logic backbone. Manages the grid state, player movement, and collision detection. |
-| `GameGridRenderer` | Class | Handles the visual updates of the grid, separating rendering logic from game calculations. |
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-## 3 Activity Breakdown
 
-Below is a detailed look at how each specific Activity functions and the logic implemented within it.
+<!-- GETTING STARTED -->
+## 2 Getting Started
 
-#### 3.1.1 Activity: `HomeActivity`
+To get a local copy up and running follow these simple example steps.
 
-*   **Description:** acts as the main menu for the application.
-*   **UI Design:**
-    *   Features a clean "Parliament off-white" background.
-    *   Displays the App Logo and Title.
-    *   Provides buttons for **Normal Mode** and **Endless Mode**.
-*   **Logic:**
-    *   Initializes views programmatically.
-    *   Passes the selected game mode to `GameActivity` via Intent extras when a button is clicked.
+### 2.1 Prerequisites
 
-#### 3.1.2 Activity: `GameActivity`
+* Android Studio
+  https://developer.android.com/studio
+  
 
-*   **Description:** The core gameplay loop occurs here. It couples the UI inputs with the `GameManager` logic.
-*   **UI Implementation:**
-    *   **Controls:** Two ImageButtons (PixelArt style) in a `RelativeLayout` container for movement (Left/Right).
-    *   **Lives:** A display of 3 hearts using XML icons with specific margins.
-    *   **Background:** Custom pattern background with Parliament-themed symbols.
-    *   **Grid:** A dynamic `GridLayout`, **initialized during runtime**.
-*   **Key Logic & Features:**
-    *   **Timer Job:** Uses Kotlin Coroutines (`while(isActive)`) to advance the game loop.
-    *   **Lifecycle Management:** Pauses the game loop in `onPause` and resumes in `onResume`.
-    *   **Vibration:** Initializes the `Vibrator` service to provide haptic feedback on collisions (short) and Game Over (long).
+### 2.2 Installation
+1. Clone the repo
+   ```sh
+   git clone https://github.com/sagieinav/edu-vetrinator-game-android.git
+   ```
+2. Open the project in Android Studio
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-#### 3.1.3 Activity: `ResultActivity`
 
-*   **Description:** The end-of-game screen displayed when lives reach zero.
-*   **UI Design:**
-    *   **Background:** The game background with reduced opacity.
-    *   **Typography:** Uses a custom PixelArt font (`pixel_purl`).
-    *   **Text:** Displays "GAME OVER" and the subtext "Et ha'pali...".
-*   **Logic:**
-    *   **Restart:** Retains the previous game mode and launches a fresh `GameActivity`.
-    *   **Home:** Returns the user to the `HomeActivity` to choose a different mode.
+
+<!-- USAGE EXAMPLES -->
+## 3 Usage
+
+This app is only made for educational purposes.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ROADMAP -->
+## 4 Roadmap
+
+- [ ] Score system
+	- [ ] Leaderboards
+- [ ] Different game difficulties 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## 5 Contributors
+
+<a href="https://github.com/sagieinav/edu-vetrinator-game-android/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=sagieinav/edu-vetrinator-game-android" alt="contrib.rocks image" />
+</a>
+
+
+
+<!-- CONTACT -->
+## 6 Contact
+
+Sagi Einav - sagi.einav@icloud.com
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/sagieinav/edu-vetrinator-game-android.svg?style=for-the-badge
+[contributors-url]: https://github.com/sagieinav/edu-vetrinator-game-android/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/sagieinav/edu-vetrinator-game-android.svg?style=for-the-badge
+[forks-url]: https://github.com/sagieinav/edu-vetrinator-game-android/network/members
+[stars-shield]: https://img.shields.io/github/stars/sagieinav/edu-vetrinator-game-android.svg?style=for-the-badge
+[stars-url]: https://github.com/sagieinav/edu-vetrinator-game-android/stargazers
+[issues-shield]: https://img.shields.io/github/issues/sagieinav/edu-vetrinator-game-android.svg?style=for-the-badge
+[issues-url]: https://github.com/sagieinav/edu-vetrinator-game-android/issues
+[license-shield]: https://img.shields.io/github/license/sagieinav/edu-vetrinator-game-android.svg?style=for-the-badge
+[license-url]: https://github.com/sagieinav/edu-vetrinator-game-android/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/sagi-einav-991471112
+[product-screenshot]: images/screenshot.png
+<!-- Shields.io badges. You can a comprehensive list with many more badges at: https://github.com/inttter/md-badges -->
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+[Vue-url]: https://vuejs.org/
+[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
+[Angular-url]: https://angular.io/
+[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
+[Svelte-url]: https://svelte.dev/
+[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
+[Laravel-url]: https://laravel.com
+[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
+[Bootstrap-url]: https://getbootstrap.com
+[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
+[JQuery-url]: https://jquery.com 
+[kotlinlang.org]: https://img.shields.io/badge/Kotlin-%237F52FF?style=for-the-badge&logo=kotlin&logoColor=white
+[Kotlin-url]: https://kotlinlang.org
