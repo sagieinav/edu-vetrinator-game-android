@@ -14,10 +14,10 @@
 <br />
 <div align="center">
   <a href="https://github.com/sagieinav/edu-vetrinator-game-android">
-    <img src="https://github.com/user-attachments/assets/f40e2544-97ac-4f3d-ba43-0545080cc45d" alt="Logo" width="80" height="80">
+    <img src="https://github.com/user-attachments/assets/f40e2544-97ac-4f3d-ba43-0545080cc45d" alt="Logo" width="120" height="120">
   </a>
 
-<h2 align="center">George The Vetrinator</h2>
+<h1 align="center">George The Vetrinator</h1>
 
   <p align="center">
     an Android arcade-style game made for educational purposes
@@ -42,7 +42,6 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
     <li>
