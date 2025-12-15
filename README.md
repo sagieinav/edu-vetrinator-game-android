@@ -36,9 +36,9 @@ The app features a pixel-art aesthetic, dynamic obstacle avoidance, and a custom
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 2 Demonstration
-https://github.com/user-attachments/assets/6cc6fb32-97c5-42d5-9f1b-810d242c0a73
 
+## 2 Demonstration
+https://github.com/user-attachments/assets/444a7d7a-eb16-4d80-a552-5ec852fc135a
 
 
 
@@ -83,15 +83,13 @@ This app is only made for educational purposes.
 
 ## 6 Contributors
 
-<a href="https://github.com/sagieinav/edu-vetrinator-game-android/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=sagieinav/edu-vetrinator-game-android" alt="contrib.rocks image" />
-</a>
+<div align="center">
+	<a href="https://github.com/sagieinav/edu-vetrinator-game-android/graphs/contributors">
+	<img src="https://contrib.rocks/image?repo=sagieinav/edu-vetrinator-game-android" alt="contrib.rocks image" />
+	</a>
+	</br>
+	Sagi Einav
+</div>
 
-
-
-<!-- CONTACT -->
-## 7 Contact
-
-Sagi Einav - sagi.einav@icloud.com
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
