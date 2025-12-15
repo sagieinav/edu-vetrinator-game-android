@@ -1,15 +1,20 @@
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![project_license][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/
+/edu-vetrinator-game-android)](https://github.com/sagieinav/edu-vetrinator-game-android/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/sagieinav/edu-vetrinator-game-android)](https://github.com/sagieinav/edu-vetrinator-game-android/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/sagieinav/edu-vetrinator-game-android)](https://github.com/sagieinav/edu-vetrinator-game-android/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/sagieinav/edu-vetrinator-game-android)](https://github.com/sagieinav/edu-vetrinator-game-android/pulls)
+
+![Android](https://img.shields.io/badge/Platform-Android-green)
+![Language](https://img.shields.io/badge/Language-Kotlin-purple)
+![Tools](https://img.shields.io/badge/Tools-Android_Studio-blue)
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/sagieinav/edu-vetrinator-game-android">
-    <img src="![[app_icon 1.webp]]" alt="Logo" width="80" height="80">
+    <img src="![app_icon](https://github.com/user-attachments/assets/f40e2544-97ac-4f3d-ba43-0545080cc45d)
+" alt="Logo" width="80" height="80">
   </a>
 
 <h2 align="center">George The Vetrinator</h2>
@@ -58,7 +63,8 @@
 
 <!-- ABOUT THE PROJECT -->
 ## 1 About The Project
-![[SS 15122025 at 18.02.50.png]]
+<img width="818" height="1460" alt="SS 15122025 at 18 02 50" src="https://github.com/user-attachments/assets/9731c063-b397-4c23-ab2b-94b68aca8f06" />
+
 This repository contains the source code for George The Vetrinator, an Android arcade-style game made for educational purposes
 
 The app features a pixel-art aesthetic, dynamic obstacle avoidance, and a custom game engine built using Kotlin in Android Studio.
