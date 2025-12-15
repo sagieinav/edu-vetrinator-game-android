@@ -45,6 +45,9 @@ The app features a pixel-art aesthetic, dynamic obstacle avoidance, and a custom
 - **Haptic Feedback**: Vibration and toast messages on collisions.
 - **PixelArt-style UI Design**: The UI is Parliament-themed, and uses PixelArt style.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 ## 3 Classes Overview
 
 The project relies on three main Activities and several helper classes to manage game logic.
@@ -59,9 +62,13 @@ Below is a table detailing the **key components** and their roles.
 | `GameManager` | Class | Logic backbone. Manages the grid state, player movement, and collision detection. |
 | `GameGridRenderer` | Class | Handles the visual updates of the grid, separating rendering logic from game calculations. |
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 ## 4 Demonstration
 https://github.com/user-attachments/assets/444a7d7a-eb16-4d80-a552-5ec852fc135a
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- GETTING STARTED -->
@@ -81,6 +88,9 @@ To get a local copy up and running follow these simple example steps.
    git clone https://github.com/sagieinav/edu-vetrinator-game-android.git
    ```
 2. Open the project in Android Studio
+   	- Can review the project's source code
+   	- Can run the game in the IDE's Android Emulator
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
