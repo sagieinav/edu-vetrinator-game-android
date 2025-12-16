@@ -1,9 +1,9 @@
-package com.example.georgethevetrinator.logic
+package com.example.georgethevetrinator.model.logic
 
-import com.example.georgethevetrinator.model.GameMode
-import com.example.georgethevetrinator.model.MoveDirection
-import com.example.georgethevetrinator.model.Obstacle
-import com.example.georgethevetrinator.model.Player
+import com.example.georgethevetrinator.model.entities.GameMode
+import com.example.georgethevetrinator.model.entities.MoveDirection
+import com.example.georgethevetrinator.model.entities.Obstacle
+import com.example.georgethevetrinator.model.entities.Player
 
 class GameManager(private val maxHealth: Int = 3, val rows: Int, val cols: Int, val gameMode: GameMode) {
 //    ======================================== ATTRIBUTES ========================================
@@ -12,7 +12,7 @@ class GameManager(private val maxHealth: Int = 3, val rows: Int, val cols: Int, 
     var currentHealth : Int = maxHealth
         private set
 
-    private var gameResettingObstacle: Obstacle ?= null // Potentially a 'CRASH' obstacle that reduces life to zero
+    private var gameResettingObstacle: Obstacle?= null // Potentially a 'CRASH' obstacle that reduces life to zero
 
 //    ======================================== GAME OBJECTS ========================================
     val player = Player(rows - 1, cols / 2, cols)
@@ -113,4 +113,3 @@ class GameManager(private val maxHealth: Int = 3, val rows: Int, val cols: Int, 
         else if (direction == MoveDirection.RIGHT) player.moveRight()
     }
 }
-

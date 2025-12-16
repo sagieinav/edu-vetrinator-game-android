@@ -7,9 +7,9 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import com.example.georgethevetrinator.R
-import com.example.georgethevetrinator.model.Obstacle
-import com.example.georgethevetrinator.model.ObstacleType
-import com.example.georgethevetrinator.model.Player
+import com.example.georgethevetrinator.model.entities.Obstacle
+import com.example.georgethevetrinator.model.entities.ObstacleType
+import com.example.georgethevetrinator.model.entities.Player
 
 class GameGridRenderer(
     private val context: Context,

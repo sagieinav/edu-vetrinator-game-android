@@ -33,56 +33,79 @@
 
 <!-- ABOUT THE PROJECT -->
 ## 1 About The Project
-This repository contains the source code for George The Vetrinator, an Android arcade-style game made for educational purposes
+George The Vetrinator is an Android arcade game developed as part of the 'UI Development' Course in my Computer Science BSc.
 
-The app features a pixel-art aesthetic, dynamic obstacle avoidance, and a custom game engine built using Kotlin in Android Studio.
+The game is built using Kotlin in Android Studio, and features a custom grid-based engine, Android-optimized MVC architecture, and retro pixel-art aesthetics.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- KEY FEATURES -->
+
 ## 2 Key Features
 - **Dynamic Grid Engine**: The game's grid is configured as GridLayout and initialized in runtime with Kotlin.
-- **MVC Pattern**: Strict separation between **M**odels (data), **V**iews, and **C**ontroller (logic).
+- **Optimized MVC Architecture**: Implements a clean separation of concerns:
+	- **Model**: Decoupled into  entities  (Data/State) and  logic  (Business Rules).
+	- **View**: Composed of XML layouts, the GameGridRenderer , and the UI-management logic within the Activities.
+	- **Controller**: The Activities (GameActivity, etc.), which handle user input and lifecycle events to bridge the Model and View.
 - **Haptic Feedback**: Vibration and toast messages on collisions.
 - **PixelArt-style UI Design**: The UI is Parliament-themed, and uses PixelArt style.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- STRUCTURE -->
+## 3 Structure
+The project follows a modular optimized MVC structure designed for scalability and readability:
+```
+├── model                  # The "Brain" (Pure Kotlin, no Android dependencies)
+│   ├── entities           # Data classes (Player, Obstacle, GameMode)
+│   └── logic              # Business rules (GameManager)
+├── ui                     # The "Body" (Android Views & Controllers)
+│   ├── game               # Game loop, Activity, and Grid Renderer
+│   ├── home               # Main Menu
+│   └── result             # Game Over screens
+└── utilities              # Shared constants and helpers
+```
 
-## 3 Classes Overview
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CLASSES OVERVIEW -->
+## 4 Classes Overview
 
 The project relies on three main Activities and several helper classes to manage game logic.
 
 Below is a table detailing the **key components** and their roles.
 
-| Class Name | Type | Description |
-| :--- | :--- | :--- |
-| `HomeActivity` | Activity | The entry point. Handles navigation and game mode selection (Normal/Endless). |
-| `GameActivity` | Activity | The main game screen. Manages UI initialization, sensors (Vibrator), and user input. |
-| `ResultActivity` | Activity | Displays the "Game Over" state and allows the user to restart or return home. |
-| `GameManager` | Class | Logic backbone. Manages the grid state, player movement, and collision detection. |
-| `GameGridRenderer` | Class | Handles the visual updates of the grid, separating rendering logic from game calculations. |
+| Class Name          | Layer                 | Description                                                                              |
+| :------------------ | :-------------------- | :--------------------------------------------------------------------------------------- |
+| `GameManager`       | **Model (Logic)**     | The core engine. Calculates movement, collisions, and state changes.                     |
+| `Player / Obstacle` | **Model (Entity)**    | Data classes holding state (position, type, health) without behavior.                    |
+| `GameActivity`      | **Controller / View** | Acts as the main controller (input/sensors) while also managing the high-level UI state. |
+| `GameGridRenderer`  | **View Helper**       | A dedicated class that handles the complex rendering logic for the game grid.            |
+| `HomeActivity`      | **Controller / View** | Handles navigation and game mode selection.                                              |
+| `ResultActivity`    | **Controller / View** | Handles 'Game Over' scenario, restart/back to home selection.                            |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-## 4 Demonstration
+<!-- DEMONSTRATION -->
+## 5 Demonstration
 https://github.com/user-attachments/assets/444a7d7a-eb16-4d80-a552-5ec852fc135a
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- GETTING STARTED -->
-## 5 Getting Started
+## 6 Getting Started
 
 To get a local copy up and running follow these simple example steps.
+### 6.1 Prerequisites
 
-### 5.1 Prerequisites
+*   **Android Studio**: Ladybug or newer (https://developer.android.com/studio)
+*   **Kotlin**: Version 1.9+
+*   **Min SDK**: 26
 
-* Android Studio
-  https://developer.android.com/studio
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
   
 
-### 5.2 Installation
+### 6.2 Installation
 1. Clone the repo
    ```sh
    git clone https://github.com/sagieinav/edu-vetrinator-game-android.git
@@ -96,16 +119,17 @@ To get a local copy up and running follow these simple example steps.
 
 
 <!-- USAGE EXAMPLES -->
-## 6 Usage
-
-This app is only made for educational purposes.
-
+## 7 Usage
+**How to Play:**
+	•	Controls: Use the left/right arrows to change lanes.
+	•	Goal: Avoid obstacles and survive as long as possible.
+	•	Game Over: In Normal Mode, the game ends when you run out of lives.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- ROADMAP -->
-## 7 Roadmap
+## 8 Roadmap
 
 - [ ] Score system
 	- [ ] Leaderboards
@@ -113,7 +137,8 @@ This app is only made for educational purposes.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 8 Contributors
+<!-- CONTRIBUTORS -->
+## 9 Contributors
 
 <div align="center">
 	<a href="https://github.com/sagieinav/edu-vetrinator-game-android/graphs/contributors">
@@ -124,4 +149,3 @@ This app is only made for educational purposes.
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-

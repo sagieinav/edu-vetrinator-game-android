@@ -1,4 +1,4 @@
-package com.example.georgethevetrinator.model
+package com.example.georgethevetrinator.model.entities
 
 data class Player(
     var row: Int,

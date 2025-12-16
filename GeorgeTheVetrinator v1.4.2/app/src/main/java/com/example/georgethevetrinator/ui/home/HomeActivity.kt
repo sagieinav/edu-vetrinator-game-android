@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.georgethevetrinator.R
-import com.example.georgethevetrinator.model.GameMode
+import com.example.georgethevetrinator.model.entities.GameMode
 import com.example.georgethevetrinator.ui.game.GameActivity
 
 class HomeActivity : AppCompatActivity() {
