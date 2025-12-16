@@ -32,7 +32,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## 1 About The Project
+## About The Project
 George The Vetrinator is an Android arcade game developed as part of the 'UI Development' Course in my Computer Science BSc.
 
 The game is built using Kotlin in Android Studio, and features a custom grid-based engine, Android-optimized MVC architecture, and retro pixel-art aesthetics.
@@ -41,7 +41,7 @@ The game is built using Kotlin in Android Studio, and features a custom grid-bas
 
 <!-- KEY FEATURES -->
 
-## 2 Key Features
+## Key Features
 - **Dynamic Grid Engine**: The game's grid is configured as GridLayout and initialized in runtime with Kotlin.
 - **Optimized MVC Architecture**: Implements a clean separation of concerns:
 	- **Model**: Decoupled into  entities  (Data/State) and  logic  (Business Rules).
@@ -53,7 +53,7 @@ The game is built using Kotlin in Android Studio, and features a custom grid-bas
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- STRUCTURE -->
-## 3 Structure
+## Structure
 The project follows a modular optimized MVC structure designed for scalability and readability:
 ```
 ├── model                  # The "Brain" (Pure Kotlin, no Android dependencies)
@@ -69,7 +69,7 @@ The project follows a modular optimized MVC structure designed for scalability a
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CLASSES OVERVIEW -->
-## 4 Classes Overview
+## Classes Overview
 
 The project relies on three main Activities and several helper classes to manage game logic.
 
@@ -87,16 +87,16 @@ Below is a table detailing the **key components** and their roles.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- DEMONSTRATION -->
-## 5 Demonstration
+## Demonstration
 https://github.com/user-attachments/assets/444a7d7a-eb16-4d80-a552-5ec852fc135a
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
-## 6 Getting Started
+## Getting Started
 
 To get a local copy up and running follow these simple example steps.
-### 6.1 Prerequisites
+### Prerequisites
 
 *   **Android Studio**: Ladybug or newer (https://developer.android.com/studio)
 *   **Kotlin**: Version 1.9+
@@ -105,7 +105,7 @@ To get a local copy up and running follow these simple example steps.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
   
 
-### 6.2 Installation
+### Installation
 1. Clone the repo
    ```sh
    git clone https://github.com/sagieinav/edu-vetrinator-game-android.git
@@ -119,17 +119,17 @@ To get a local copy up and running follow these simple example steps.
 
 
 <!-- USAGE EXAMPLES -->
-## 7 Usage
+## Usage
 **How to Play:**
-	•	Controls: Use the left/right arrows to change lanes.
-	•	Goal: Avoid obstacles and survive as long as possible.
-	•	Game Over: In Normal Mode, the game ends when you run out of lives.
+- Controls: Use the left/right arrows to change lanes.
+- Goal: Avoid obstacles and survive as long as possible.
+- Game Over: In Normal Mode, the game ends when you run out of lives.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- ROADMAP -->
-## 8 Roadmap
+## Roadmap
 
 - [ ] Score system
 	- [ ] Leaderboards
@@ -138,7 +138,7 @@ To get a local copy up and running follow these simple example steps.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTORS -->
-## 9 Contributors
+## Contributors
 
 <div align="center">
 	<a href="https://github.com/sagieinav/edu-vetrinator-game-android/graphs/contributors">
