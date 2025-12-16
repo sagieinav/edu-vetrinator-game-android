@@ -56,13 +56,13 @@ The game is built using Kotlin in Android Studio, and features a custom grid-bas
 ## Structure
 The project follows a modular optimized MVC structure designed for scalability and readability:
 ```
-├── model                  # The "Brain" (Pure Kotlin, no Android dependencies)
+├── model                  # Model Layer
 │   ├── entities           # Data classes (Player, Obstacle, GameMode)
-│   └── logic              # Business rules (GameManager)
-├── ui                     # The "Body" (Android Views & Controllers)
+│   └── logic              # Game logic (GameManager)
+├── ui                     # View & Controller Layers
 │   ├── game               # Game loop, Activity, and Grid Renderer
 │   ├── home               # Main Menu
-│   └── result             # Game Over screens
+│   └── result             # Result screen
 └── utilities              # Shared constants and helpers
 ```
 
