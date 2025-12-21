@@ -133,7 +133,17 @@ To get a local copy up and running follow these simple example steps.
 
 - [ ] Score system
 	- [ ] Leaderboards
-- [ ] Different game difficulties 
+ 	- [ ] Odometer
+	- [ ] Coins on road
+- [ ] Player movement improvements
+	- [ ] Tilt left/right for player movement
+	- [ ] Tilt forward/backwards for speed control
+- [ ] Game grid improvements
+	- [ ] A wider 5-lane road
+	- [ ] A longer road
+- [ ] Crash sound
+- [ ] Different game difficulties
+ 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
