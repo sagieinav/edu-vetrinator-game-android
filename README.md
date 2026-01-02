@@ -32,7 +32,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## 1 About The Project
 George The Vetrinator is an Android arcade game developed as part of the 'UI Development' Course in my Computer Science BSc.
 
 The game is built using Kotlin in Android Studio, and features a custom grid-based engine, Android-optimized MVC architecture, and retro pixel-art aesthetics.
@@ -41,7 +41,7 @@ The game is built using Kotlin in Android Studio, and features a custom grid-bas
 
 <!-- KEY FEATURES -->
 
-## Key Features
+## 2 Key Features
 - **Dynamic Grid Engine**: The game's grid is configured as GridLayout and initialized in runtime with Kotlin.
 - **Optimized MVC Architecture**: Implements a clean separation of concerns:
 	- **Model**: Decoupled into  entities  (Data/State) and  logic  (Business Rules).
@@ -53,7 +53,7 @@ The game is built using Kotlin in Android Studio, and features a custom grid-bas
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- STRUCTURE -->
-## Structure
+## 3 Structure
 The project follows a modular optimized MVC structure designed for scalability and readability:
 ```
 ├── model                  # Model Layer
@@ -69,7 +69,7 @@ The project follows a modular optimized MVC structure designed for scalability a
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CLASSES OVERVIEW -->
-## Classes Overview
+## 4 Classes Overview
 
 The project relies on three main Activities and several helper classes to manage game logic.
 
@@ -87,16 +87,16 @@ Below is a table detailing the **key components** and their roles.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- DEMONSTRATION -->
-## Demonstration
+## 5 Demonstration
 https://github.com/user-attachments/assets/444a7d7a-eb16-4d80-a552-5ec852fc135a
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
-## Getting Started
+## 6 Getting Started
 
 To get a local copy up and running follow these simple example steps.
-### Prerequisites
+### 6.1 Prerequisites
 
 *   **Android Studio**: Ladybug or newer (https://developer.android.com/studio)
 *   **Kotlin**: Version 1.9+
@@ -105,7 +105,7 @@ To get a local copy up and running follow these simple example steps.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
   
 
-### Installation
+### 6.2 Installation
 1. Clone the repo
    ```sh
    git clone https://github.com/sagieinav/edu-vetrinator-game-android.git
@@ -119,7 +119,7 @@ To get a local copy up and running follow these simple example steps.
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## 7 Usage
 **How to Play:**
 - Controls: Use the left/right arrows to change lanes.
 - Goal: Avoid obstacles and survive as long as possible.
@@ -129,16 +129,40 @@ To get a local copy up and running follow these simple example steps.
 
 
 <!-- ROADMAP -->
-## Roadmap
+## 8 Roadmap
 
+- [x] App icon
+- [x] Game grid improvements
+    - [x] A wider 5-lane road
+    - [x] A longer road
+- [ ] Player movement improvements
+    - [x] Tilt left/right for player movement
+    - [ ] Tilt forward/backwards for speed control
 - [ ] Score system
-	- [ ] Leaderboards
-- [ ] Different game difficulties 
+    - [ ] Odometer
+    - [ ] Coins on road
+- [x] Add game options to home screen
+	- [x] Game difficulty - slow/fast toggle
+	- [x] Sensor mode (tilt movement) - ON/OFF toggle
+- [ ] Sound effects
+	- [ ] Crash sounds
+	- [ ] Background music
+- [ ] Leaderboards
+	- [x] Add button to access leaderboards from home screen
+	- [ ] Leaderboards will open as a fragment
+	- [ ] Shows current top 10. Each row includes:
+		- [ ] Player name
+		- [ ] Score
+		- [ ] Location (when was this record set)
+	- [ ] Location will open as another (map) fragment
+- [ ] Modularize XML layouts
+- [ ] Implement Glide and ImageLoader for loading images
+- [ ] Use Data Binding to inject dynamc data into repetitive XML components
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTORS -->
-## Contributors
+## 9 Contributors
 
 <div align="center">
 	<a href="https://github.com/sagieinav/edu-vetrinator-game-android/graphs/contributors">

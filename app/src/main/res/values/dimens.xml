@@ -32,11 +32,12 @@
     <dimen name="app_header_size">150dp</dimen>
     <dimen name="app_title_size">60dp</dimen>
     <dimen name="app_header_vertical_correction">12dp</dimen>
-    <dimen name="app_header_margin_top">100dp</dimen>
+    <dimen name="app_header_margin_top">120dp</dimen>
     <dimen name="app_header_separator_margin">16dp</dimen>
 
 <!-- === MENU BUTTONS (HomeActivity & ResultActivity) === -->
-    <dimen name="menu_buttons_height">100dp</dimen>
+    <dimen name="menu_buttons_height">90dp</dimen>
+    <dimen name="menu_play_button_margin">40dp</dimen>
     <dimen name="menu_buttons_margin">20dp</dimen>
 
 <!-- === GAME OVER HEADER (ResultActivity) === -->

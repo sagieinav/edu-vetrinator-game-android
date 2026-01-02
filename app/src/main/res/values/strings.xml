@@ -24,5 +24,6 @@
 <!--  ACCESSIBILITY DESCRIPTIONS  -->
     <string name="desc_move_left">Move Left</string>
     <string name="desc_move_right">Move Right</string>
+    <string name="leaderboards">Leaderboards</string>
 
 </resources>

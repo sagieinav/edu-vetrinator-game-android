@@ -43,7 +43,7 @@
 
         <!-- LEFT BUTTON CONTAINER -->
         <FrameLayout
-            android:id="@+id/frame_action_left"
+            android:id="@+id/wrapper_move_left"
             android:layout_width="@dimen/button_width"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
@@ -81,7 +81,7 @@
         <!-- RIGHT BUTTON CONTAINER -->
         <!-- scaleX="-1" for flipping direction from left to right -->
         <FrameLayout
-            android:id="@+id/frame_action_right"
+            android:id="@+id/wrapper_move_right"
             android:layout_width="@dimen/button_width"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"

@@ -1,122 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_activity_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeActivity"
     android:background="@color/offwhite">
 
+    <!-- === LEADERBOARDS BUTTON === -->
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_leaderboards"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/btn_leaderboards"
+        android:scaleType="fitCenter"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/leaderboards"
+        />
+
+
     <!-- === HEADER CONTAINER === -->
-    <!-- Centered horizontally, pushed down by margin -->
-    <LinearLayout
-        android:id="@+id/container_home_header"
+    <include
+        layout="@layout/view_home_header"
+        android:id="@+id/home_header"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
 
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/app_header_margin_top"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
-        android:gravity="center_vertical">
 
-        <!-- 1. LOGO -->
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_app_icon"
-            android:layout_width="@dimen/app_header_size"
-            android:layout_height="@dimen/app_header_size"
-            android:src="@drawable/app_icon" />
 
-        <View
-            android:id="@+id/separator_header"
-            android:layout_width="3dp"
-            android:layout_height="@dimen/app_header_size"
-            android:layout_above="@id/container_controls"
+    <!-- === PLAY BUTTON === -->
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_play"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/menu_buttons_height"
+        android:src="@drawable/btn_play"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        android:contentDescription="@string/normal_mode"
 
-            android:background="@color/black"
-            android:alpha="0.15"
-            android:elevation="1dp"
-            android:layout_marginEnd="@dimen/app_header_separator_margin"/>
+        android:layout_margin="@dimen/menu_play_button_margin"
+        app:layout_constraintTop_toBottomOf="@id/home_header"
+        app:layout_constraintBottom_toTopOf="@id/home_settings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"
+        />
 
-        <!-- 2. TEXT COLUMN -->
-        <LinearLayout
-            android:id="@+id/container_app_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/app_header_vertical_correction"
-            >
 
-            <TextView
-                android:id="@+id/tv_george"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="George"
-                android:textSize="@dimen/app_title_size"
-                android:fontFamily="@font/pixel_purl"
-                android:textColor="@color/brown_george"
-                android:includeFontPadding="false"
-                android:lineHeight="@dimen/app_title_size"/>
 
-            <TextView
-                android:id="@+id/tv_the"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="The"
-                android:textSize="@dimen/app_title_size"
-                android:fontFamily="@font/pixel_purl"
-                android:textColor="@color/brown_george"
-                android:includeFontPadding="false"/>
+    <!-- === GAME SETTINGS === -->
+    <include
+        layout="@layout/view_home_settings"
+        android:id="@+id/home_settings"
 
-            <TextView
-                android:id="@+id/tv_vetrinator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vetrinator"
-                android:textSize="@dimen/app_title_size"
-                android:fontFamily="@font/pixel_purl"
-                android:textColor="@color/brown_george"
-                android:includeFontPadding="false"/>
-        </LinearLayout>
-    </LinearLayout>
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
 
-    <RelativeLayout
-        android:id="@+id/container_home_menu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/container_home_header" >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
-        <RelativeLayout
-            android:id="@+id/container_play_modes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/container_home_header"
-            android:layout_centerVertical="true">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btn_normal_mode"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/menu_buttons_height"
-                android:src="@drawable/btn_normal_mode"
-                android:scaleType="fitCenter"
-                android:background="@null"
-                android:contentDescription="@string/normal_mode"
-                android:layout_margin="@dimen/menu_buttons_margin" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btn_endless_mode"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/menu_buttons_height"
-                android:src="@drawable/btn_endless_mode"
-                android:layout_below="@id/btn_normal_mode"
-                android:scaleType="fitCenter"
-                android:background="@null"
-                android:contentDescription="@string/endless_mode"
-                android:layout_margin="@dimen/menu_buttons_margin" />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

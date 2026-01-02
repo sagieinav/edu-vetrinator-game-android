@@ -8,9 +8,9 @@ modified: 2025-12-11T21:28:55+02:00
 > ```toc
 > ```
 
-[[1 משחקון מירוץ מכשולים]]
+[[תרגיל בית 1]]
 [[VetrinatorGame - Initial Workflow]]
-## 1 Work Log
+## 1 Work Log (pt. 1)
 ### 1.1 GameActivity
 
 #### 1.1.1 UI Implementation
@@ -132,30 +132,58 @@ modified: 2025-12-11T21:28:55+02:00
 
 ---
 
-## 2 Notes
-### 2.1 Naming Conventions
-#### 2.1.1 Activities
+## 2 Work Log (pt. 2)
+Tilt sensor - can use accelerometer (as horizontal acceleration).
+
+### 2.1 Home screen refinements
+- Switch to constraint layout
+- Create a coin sprite
+- Create a leaderboards button img
+	- Add a 'leaderboards' button in the top-right section of the home screen
+- Create a card view for game settings
+- Create text-toggle buttons for these 3 game settings:
+	- Game mode
+	- Difficulty
+	- Controls
+	- `track` is the background of the switch
+	- `thumb` is the moving part, that represents the selected toggle
+- Remove the two buttons "Normal Mode" and "Endless Mode" in favor of one "PLAY" button
+- Modularize components within `activity_home` layout into multiple layouts
+- 
+
+### 2.2 Kotlin refinements to match new home screen
+- Remove references to "normal mode" and "endless mode" button
+- Add reference to "play button"
+- Link all 3 switches and their text views
+- Modify the bundle sent when changing to GameActivity
+	- `gameMode` is already present
+	- Add `difficulty`
+	- Add `controlsType`
+- 
+## 3 Notes
+### 3.1 Naming Conventions
+#### 3.1.1 Activities
 PascalCase: `PuposeActivity`
 **Examples:** `HomeActivity`, `GameActivity`, `ResultActivity`
 
-#### 2.1.2 Layout Files
+#### 3.1.2 Layout Files
 snake_case: `activity_purpose`
 **Examples:** `activity_home.xml`, `activity_game.xml`, `activity_result.xml`
 
-#### 2.1.3 Inner Views & Layouts
+#### 3.1.3 Inner Views & Layouts
 ##### For ID in XML
 snake_case: `type_purpose`
 **Examples:** `container_controls`, `btn_move_left`, `iv_app_icon`
 ##### For Variables in Kotlin
 camelCase: `descriptionType`
 **Examples:** `leftButtonView`, `heartsView`, 
-#### 2.1.4 Drawables
+#### 3.1.4 Drawables
 snake_case: `category_content_state`
 Examples:
 - **Icons:** `ic_arrow_left`, `ic_heart`...
 - **Player sprite:** `player_george.webp`
 - **Obstacle sprites:** `obstacle_neta.webp`
-### 2.2 assets vs drawable (LLM-Generated)
+### 3.2 assets vs drawable (LLM-Generated)
 
 | Feature | `res/drawable` | `assets` |
 | :--- | :--- | :--- |
@@ -164,24 +192,24 @@ Examples:
 | **Verification** | Checked at compile time | Checked at runtime (risk of typos) |
 | **Best For** | UI icons, buttons, background | Game levels, custom data, organized sprites |
 
-### 2.3 Size Units Cheat Sheet (LLM-Generated)
+### 3.3 Size Units Cheat Sheet (LLM-Generated)
 
-#### 2.3.1 `dp` (Density-independent Pixels) - **Use for Everything Visual**
+#### 3.3.1 `dp` (Density-independent Pixels) - **Use for Everything Visual**
 *   **What it is:** A physical unit of size. `1dp` is roughly 1/160th of an inch.
 *   **Why use it:** It guarantees your button looks like a button (finger-sized) on both a tiny phone and a giant tablet. It automatically scales based on the screen's pixel density (`dpi`).
 *   **Rule:** Use `dp` for **widths**, **heights**, **margins**, **padding**, and coordinate math [1][2].
 
-#### 2.3.2 `sp` (Scale-independent Pixels) - **Use for Text ONLY**
+#### 3.3.2 `sp` (Scale-independent Pixels) - **Use for Text ONLY**
 *   **What it is:** Same as `dp`, but it *also* scales based on the user's "Font Size" setting in Android settings.
 *   **Why use it:** If a user is visually impaired and sets their phone text to "Huge," your app's text will grow if you use `sp`. If you use `dp` for text, you are breaking accessibility accessibility rules.
 *   **Rule:** Use `sp` **only for `textSize`** [3][4].
 
-#### 2.3.3 `px` (Pixels) - **Avoid in XML, Use in Code**
+#### 3.3.3 `px` (Pixels) - **Avoid in XML, Use in Code**
 *   **What it is:** A raw screen pixel.
 *   **Why use it:** You generally *don't* want to use this in XML designs because `50px` is huge on an old phone but microscopic on a new Pixel 8 Pro.
 *   **Exception:** In your **Java/Kotlin code**, almost all drawing functions (like `canvas.drawRect` or `view.getX()`) return or expect **pixels**. You will often need to calculate: `pixels = dp * density`.
 
-#### 2.3.4 Quick Conversion Math
+#### 3.3.4 Quick Conversion Math
 When you are coding your game logic, you'll think in `dp` (e.g., "The lane is 100dp wide"), but the code needs `px`.
 
 ```kotlin
@@ -190,7 +218,7 @@ val density = resources.displayMetrics.density
 val pixels = (dpValue * density).toInt()
 ```
 
-#### 2.3.5 Summary Table
+#### 3.3.5 Summary Table
 | Unit | Full Name | Use For | Scaling |
 | :--- | :--- | :--- | :--- |
 | **dp** | Density-independent Pixel | Layouts, Buttons, Icons, Margins | Screen Density (DPI) |

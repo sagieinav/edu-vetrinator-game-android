@@ -1,27 +1,25 @@
-package com.example.georgethevetrinator.model.logic
+package com.example.georgethevetrinator.logic
 
+import com.example.georgethevetrinator.model.GameMode
+import com.example.georgethevetrinator.model.MoveDirection
+import com.example.georgethevetrinator.model.Obstacle
+import com.example.georgethevetrinator.model.Player
 import com.example.georgethevetrinator.model.entities.GameControls
 import com.example.georgethevetrinator.model.entities.GameDifficulty
-import com.example.georgethevetrinator.model.entities.GameMode
-import com.example.georgethevetrinator.model.entities.MoveDirection
-import com.example.georgethevetrinator.model.entities.Obstacle
-import com.example.georgethevetrinator.model.entities.Player
 
 class GameManager(
     private val maxHealth: Int = 3,
-    val rows: Int,
-    val cols: Int,
+    val rows: Int, val cols: Int,
     val gameMode: GameMode,
-    gameDifficulty: GameDifficulty,
-    gameControls: GameControls
-) {
+    val gameDifficulty: GameDifficulty,
+    val gameControls: GameControls) {
 //    ======================================== ATTRIBUTES ========================================
     private var currentFrame : Int = 0
 
     var currentHealth : Int = maxHealth
         private set
 
-    private var gameResettingObstacle: Obstacle?= null // Potentially a 'CRASH' obstacle that reduces life to zero
+    private var gameResettingObstacle: Obstacle ?= null // Potentially a 'CRASH' obstacle that reduces life to zero
 
 //    ======================================== GAME OBJECTS ========================================
     val player = Player(rows - 1, cols / 2, cols)
@@ -122,3 +120,4 @@ class GameManager(
         else if (direction == MoveDirection.RIGHT) player.moveRight()
     }
 }
+

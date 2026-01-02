@@ -2,6 +2,10 @@ package com.example.georgethevetrinator.ui.game
 
 import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
@@ -19,6 +23,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.georgethevetrinator.R
+import com.example.georgethevetrinator.model.entities.GameControls
+import com.example.georgethevetrinator.model.entities.GameDifficulty
 import com.example.georgethevetrinator.model.logic.GameManager
 import com.example.georgethevetrinator.model.entities.GameMode
 import com.example.georgethevetrinator.model.entities.MoveDirection
@@ -29,18 +35,20 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-class GameActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity(), SensorEventListener {
 //    ======================================== ATTRIBUTES ========================================
-    // === GAME MODE (initialized later. Now setting default fallback) ===
+    // === GAME SETTINGS (initialized later. Now setting default fallback) ===
     var gameMode = GameMode.NORMAL
+    var gameDifficulty = GameDifficulty.EASY
+    var gameControls = GameControls.BUTTONS
     // === GAME MANAGER & GAME RENDERER ===
     private lateinit var gameManager: GameManager
     private lateinit var gameGridRenderer: GameGridRenderer
 
     // === LINKED VIEWS (STATIC) ===
     private lateinit var heartsView: Array<AppCompatImageView>
-    private lateinit var leftButtonView: AppCompatImageButton
-    private lateinit var rightButtonView: AppCompatImageButton
+    private lateinit var btnMoveLeft: AppCompatImageButton
+    private lateinit var btnMoveRight: AppCompatImageButton
 
     // === GAME GRID ===
     private lateinit var gridView: GridLayout
@@ -54,11 +62,16 @@ class GameActivity : AppCompatActivity() {
     // === VIBRATOR ===
     private lateinit var vibrator: Vibrator
 
+    // === SENSOR MANAGER ===
+    private lateinit var sensorManager: SensorManager
+    private var accelerometer: Sensor? = null
+    private var smoothedXAxis = 0f
+    private var canMoveAgain = true
 
-//    ======================================== FUNCTIONS ========================================
+
+    //    ======================================== FUNCTIONS ========================================
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         enableEdgeToEdge()
         setContentView(R.layout.activity_game)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_activity_game)) { v, insets ->
@@ -69,6 +82,7 @@ class GameActivity : AppCompatActivity() {
 
         // 1. Initialize services
         initVibrator()
+        initSensor()
 
         // 2. Find views
         findViews()
@@ -82,14 +96,16 @@ class GameActivity : AppCompatActivity() {
     // === GAME INITIALIZATION ===
     private fun initGame() {
         // 1. Game Mode
-        initGameMode()
+        initGameSettings()
 
         // 2. Game Manager
         gameManager = GameManager(
             heartsView.size,
             ROWS,
             COLS,
-            gameMode)
+            gameMode,
+            gameDifficulty,
+            gameControls)
 
         // 3. Event Callbacks (onCollision, onGameOver)
         initEventCallbacks()
@@ -100,6 +116,35 @@ class GameActivity : AppCompatActivity() {
         if (modeString != null) {
             try {
                 gameMode = GameMode.valueOf(modeString)
+            }
+            catch (e: IllegalArgumentException) { }
+        }
+    }
+
+    private fun initGameSettings() {
+        // 1. Mode
+        val modeString: String? = intent.getStringExtra("GAME_MODE")
+        if (modeString != null) {
+            try {
+                gameMode = GameMode.valueOf(modeString)
+            }
+            catch (e: IllegalArgumentException) { }
+        }
+
+        // 2. Difficulty
+        val difficultyString: String? = intent.getStringExtra("GAME_DIFFICULTY")
+        if (difficultyString != null) {
+            try {
+                gameDifficulty = GameDifficulty.valueOf(difficultyString)
+            }
+            catch (e: IllegalArgumentException) { }
+        }
+
+        // 3. Controls
+        val controlsString: String? = intent.getStringExtra("GAME_CONTROLS")
+        if (controlsString != null) {
+            try {
+                gameControls = GameControls.valueOf(controlsString)
             }
             catch (e: IllegalArgumentException) { }
         }
@@ -129,10 +174,11 @@ class GameActivity : AppCompatActivity() {
     // === TIMER ===
     private fun startTimer() {
         startTime = System.currentTimeMillis()
+        val timerDelay = if (gameDifficulty == GameDifficulty.EASY) Constants.Timer.DELAY_EASY else Constants.Timer.DELAY_HARD
         timerJob = lifecycleScope.launch {
             while (isActive) {
                 Log.d("GameLoop", "Tick!")
-                delay(Constants.Timer.DELAY)
+                delay(timerDelay)
                 advanceGame()
             }
         }
@@ -141,11 +187,17 @@ class GameActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         startTimer()
+        if (gameControls == GameControls.TILT) {
+            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
+        }
     }
 
     override fun onPause() {
         super.onPause()
         timerJob.cancel()
+        if (gameControls == GameControls.TILT) {
+            sensorManager.unregisterListener(this)
+        }
     }
 
 
@@ -178,12 +230,43 @@ class GameActivity : AppCompatActivity() {
         )
     }
 
+    // === SENSOR MANAGER ===
+    private fun initSensor() {
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (gameControls != GameControls.TILT || event == null) return
+
+        val xAxis = event.values[0]
+        smoothedXAxis = Constants.Sensor.TILT_ALPHA * xAxis + (1 - Constants.Sensor.TILT_ALPHA) * smoothedXAxis
+
+        if (Math.abs(smoothedXAxis) < Constants.Sensor.NEUTRAL_ZONE) canMoveAgain = true
+
+        if (canMoveAgain) {
+            if (smoothedXAxis > Constants.Sensor.TILT_THRESHOLD) {
+                movementInitiated(MoveDirection.LEFT)
+                canMoveAgain = false
+            }
+            else if (smoothedXAxis < -Constants.Sensor.TILT_THRESHOLD) {
+                movementInitiated(MoveDirection.RIGHT)
+                canMoveAgain = false
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        // Not needed, implementing empty function to satisfy interface
+    }
+
+
 
     // === FIND & INITIALIZE VIEWS
     private fun findViews() {
         gridView = findViewById(R.id.grid_game_board)
-        leftButtonView = findViewById(R.id.btn_move_left)
-        rightButtonView = findViewById(R.id.btn_move_right)
+        btnMoveLeft = findViewById(R.id.btn_move_left)
+        btnMoveRight = findViewById(R.id.btn_move_right)
         heartsView = arrayOf(
             findViewById(R.id.iv_heart1),
             findViewById(R.id.iv_heart2),
@@ -192,8 +275,15 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        leftButtonView.setOnClickListener { view: View -> movementInitiated(MoveDirection.LEFT) }
-        rightButtonView.setOnClickListener { view: View -> movementInitiated(MoveDirection.RIGHT) }
+        if (gameControls == GameControls.TILT) {
+            findViewById<View>(R.id.wrapper_move_left).visibility = View.GONE
+            findViewById<View>(R.id.wrapper_move_right).visibility = View.GONE
+            // initSensor() already been called in onCreate
+        }
+        else {
+            btnMoveLeft.setOnClickListener { view: View -> movementInitiated(MoveDirection.LEFT) }
+            btnMoveRight.setOnClickListener { view: View -> movementInitiated(MoveDirection.RIGHT) }
+        }
 
         // gameGridRenderer will find and init all game board views:
         gameGridRenderer = GameGridRenderer(this, gridView, ROWS, COLS)

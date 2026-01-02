@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="8dp">
+
+<TextView
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:fontFamily="@font/pixel_purl"
+    android:text="Difficulty"
+    android:textColor="@color/brown_george"
+    android:textSize="26sp" />
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:background="@drawable/switch_bg"
+        >
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_difficulty"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:checked="false"
+            android:textColor="@color/white"
+            app:switchMinWidth="140dp"
+            app:thumbTint="@null"
+            app:trackTint="@null"
+            app:track="@drawable/switch_track_selector"
+            android:thumb="@drawable/switch_thumb_selector"
+            />
+
+        <LinearLayout
+            android:layout_width="140dp"
+            android:layout_height="24dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_easy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="EASY"
+                tools:textColor="@color/brown_george"
+                android:textColor="@drawable/switch_text_selector"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/pixel_purl"
+                android:translationY="0.5dp"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_hard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="HARD"
+                android:textColor="@drawable/switch_text_selector"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/pixel_purl"
+                android:translationY="0.5dp"
+                />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
