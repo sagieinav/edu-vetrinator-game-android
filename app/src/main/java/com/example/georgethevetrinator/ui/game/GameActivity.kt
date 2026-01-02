@@ -1,7 +1,10 @@
 package com.example.georgethevetrinator.ui.game
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -19,17 +22,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.georgethevetrinator.R
+import com.example.georgethevetrinator.logic.GameManager
 import com.example.georgethevetrinator.model.entities.GameControls
 import com.example.georgethevetrinator.model.entities.GameDifficulty
-import com.example.georgethevetrinator.model.logic.GameManager
 import com.example.georgethevetrinator.model.entities.GameMode
 import com.example.georgethevetrinator.model.entities.MoveDirection
+import com.example.georgethevetrinator.model.logic.AudioManager
 import com.example.georgethevetrinator.ui.result.ResultActivity
 import com.example.georgethevetrinator.utilities.Constants
+import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -41,12 +47,15 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     var gameMode = GameMode.NORMAL
     var gameDifficulty = GameDifficulty.EASY
     var gameControls = GameControls.BUTTONS
-    // === GAME MANAGER & GAME RENDERER ===
+    // === GAME MANAGER, AUDIO MANAGER, GAME RENDERER ===
     private lateinit var gameManager: GameManager
+    private lateinit var audioManager: AudioManager
     private lateinit var gameGridRenderer: GameGridRenderer
 
     // === LINKED VIEWS (STATIC) ===
-    private lateinit var heartsView: Array<AppCompatImageView>
+    private lateinit var tvScore: MaterialTextView
+    private lateinit var viewHearts: Array<AppCompatImageView>
+    private lateinit var ivBoostIndicator: AppCompatImageView
     private lateinit var btnMoveLeft: AppCompatImageButton
     private lateinit var btnMoveRight: AppCompatImageButton
 
@@ -65,8 +74,11 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     // === SENSOR MANAGER ===
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
-    private var smoothedXAxis = 0f
+    private var xAxis = 0f
     private var canMoveAgain = true
+    private var lastYAxis = 0f
+    private var isBoosting = false
+    private var lastBoostTime: Long = 0
 
 
     //    ======================================== FUNCTIONS ========================================
@@ -83,6 +95,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         // 1. Initialize services
         initVibrator()
         initSensor()
+        audioManager = AudioManager(applicationContext)
 
         // 2. Find views
         findViews()
@@ -100,25 +113,16 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
         // 2. Game Manager
         gameManager = GameManager(
-            heartsView.size,
+            viewHearts.size,
             ROWS,
             COLS,
             gameMode,
             gameDifficulty,
-            gameControls)
+            gameControls
+        )
 
         // 3. Event Callbacks (onCollision, onGameOver)
         initEventCallbacks()
-    }
-
-    private fun initGameMode() {
-        val modeString: String? = intent.getStringExtra("GAME_MODE")
-        if (modeString != null) {
-            try {
-                gameMode = GameMode.valueOf(modeString)
-            }
-            catch (e: IllegalArgumentException) { }
-        }
     }
 
     private fun initGameSettings() {
@@ -152,10 +156,34 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     private fun initEventCallbacks() {
         // Initialize the 'onCollision' event:
-        gameManager.onCollision = {
+        gameManager.onObstacleHit = {
+            audioManager.playCrashSfx()
             val crashMsg = getString(gameManager.crashMsgResourceId)
             Toast.makeText(this, crashMsg, Toast.LENGTH_SHORT).show()
             vibrateShort()
+        }
+
+        gameManager.onCoinCollected = {
+            audioManager.playCoinSfx()
+            val colorFrom = ContextCompat.getColor(this, R.color.brown_george)
+            val colorTo = Color.parseColor("#FFD700") // Gold
+
+            // 1. Transition to Gold
+            ObjectAnimator.ofInt(tvScore, "textColor", colorFrom, colorTo).apply {
+                duration = 250
+                setEvaluator(ArgbEvaluator())
+                start()
+            }
+
+            // 2. Return to Original after 0.8 second
+            lifecycleScope.launch {
+                delay(800)
+                ObjectAnimator.ofInt(tvScore, "textColor", colorTo, colorFrom).apply {
+                    duration = 350
+                    setEvaluator(ArgbEvaluator())
+                    start()
+                }
+            }
         }
 
         // Initialize the 'onGameOver' event:
@@ -174,11 +202,12 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     // === TIMER ===
     private fun startTimer() {
         startTime = System.currentTimeMillis()
-        val timerDelay = if (gameDifficulty == GameDifficulty.EASY) Constants.Timer.DELAY_EASY else Constants.Timer.DELAY_HARD
+        val baseDelay = if (gameDifficulty == GameDifficulty.EASY) Constants.Timer.DELAY_EASY else Constants.Timer.DELAY_HARD
         timerJob = lifecycleScope.launch {
             while (isActive) {
+                val dynamicDelay = (baseDelay / gameManager.speedMultiplier).toLong()
                 Log.d("GameLoop", "Tick!")
-                delay(timerDelay)
+                delay(dynamicDelay)
                 advanceGame()
             }
         }
@@ -186,6 +215,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onResume() {
         super.onResume()
+        audioManager.startMusic()
         startTimer()
         if (gameControls == GameControls.TILT) {
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
@@ -194,11 +224,23 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onPause() {
         super.onPause()
+        audioManager.pauseMusic()
         timerJob.cancel()
         if (gameControls == GameControls.TILT) {
             sensorManager.unregisterListener(this)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clean up the grid renderer to prevent memory leaks
+        gameGridRenderer.release()
+
+        // Clean up audio manager
+        audioManager.stopAll()
+    }
+
+
 
 
     // === VIBRATOR ===
@@ -239,26 +281,83 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         if (gameControls != GameControls.TILT || event == null) return
 
-        val xAxis = event.values[0]
-        smoothedXAxis = Constants.Sensor.TILT_ALPHA * xAxis + (1 - Constants.Sensor.TILT_ALPHA) * smoothedXAxis
+        val rawXAxis = event.values[0]
+        val rawYAxis = event.values[1]
+        xAxis = Constants.Sensor.TILT_ALPHA * rawXAxis + (1 - Constants.Sensor.TILT_ALPHA) * xAxis
 
-        if (Math.abs(smoothedXAxis) < Constants.Sensor.NEUTRAL_ZONE) canMoveAgain = true
+        if (Math.abs(xAxis) < Constants.Sensor.NEUTRAL_ZONE) canMoveAgain = true
+        if (canMoveAgain) processHorizontalTilt(xAxis)
 
-        if (canMoveAgain) {
-            if (smoothedXAxis > Constants.Sensor.TILT_THRESHOLD) {
-                movementInitiated(MoveDirection.LEFT)
-                canMoveAgain = false
-            }
-            else if (smoothedXAxis < -Constants.Sensor.TILT_THRESHOLD) {
-                movementInitiated(MoveDirection.RIGHT)
-                canMoveAgain = false
-            }
-        }
+        processVerticalFlick(rawYAxis)
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         // Not needed, implementing empty function to satisfy interface
     }
+
+    fun processHorizontalTilt(xAxis: Float) {
+        if (xAxis > Constants.Sensor.TILT_SIDE_THRESHOLD) {
+            movementInitiated(MoveDirection.LEFT)
+            canMoveAgain = false
+        }
+        else if (xAxis < -Constants.Sensor.TILT_SIDE_THRESHOLD) {
+            movementInitiated(MoveDirection.RIGHT)
+            canMoveAgain = false
+        }
+    }
+
+    private fun processVerticalFlick(currentY: Float) {
+        val currentTime = System.currentTimeMillis()
+        val deltaY = currentY - lastYAxis
+        lastYAxis = currentY
+
+        // 1. Check if already boosting or in cooldown
+        if (isBoosting || (currentTime - lastBoostTime < Constants.Sensor.BOOST_COOLDOWN)) {
+            return
+        }
+
+        // 2. Detect forward flick
+        if (deltaY < -Constants.Sensor.FLICK_THRESHOLD) {
+            triggerBoost()
+        }
+    }
+
+private fun triggerBoost() {
+    isBoosting = true
+    audioManager.playBoostSfx()
+    lastBoostTime = System.currentTimeMillis()
+    gameManager.speedMultiplier = Constants.Sensor.BOOST_SPEED
+
+    ivBoostIndicator.visibility = View.VISIBLE
+    ivBoostIndicator.alpha = 0f
+    ivBoostIndicator.scaleX = 0f
+    ivBoostIndicator.scaleY = 0f
+    ivBoostIndicator.animate()
+        .alpha(1f)
+        .scaleX(1.2f)
+        .scaleY(1.2f)
+        .setDuration(200)
+        .withEndAction {
+            ivBoostIndicator.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+        }.start()
+
+    // Auto-Reset the timer when boost ends
+    lifecycleScope.launch {
+        delay(Constants.Sensor.BOOST_DURATION)
+        gameManager.speedMultiplier = 1.0f
+
+        ivBoostIndicator.animate()
+            .alpha(0f)
+            .scaleX(0f)
+            .scaleY(0f)
+            .setDuration(300)
+            .withEndAction {
+                ivBoostIndicator.visibility = View.INVISIBLE
+                isBoosting = false
+            }.start()
+    }
+}
+
 
 
 
@@ -267,17 +366,18 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         gridView = findViewById(R.id.grid_game_board)
         btnMoveLeft = findViewById(R.id.btn_move_left)
         btnMoveRight = findViewById(R.id.btn_move_right)
-        heartsView = arrayOf(
+        tvScore = findViewById(R.id.tv_score)
+        viewHearts = arrayOf(
             findViewById(R.id.iv_heart1),
             findViewById(R.id.iv_heart2),
             findViewById(R.id.iv_heart3)
         )
+        ivBoostIndicator = findViewById(R.id.iv_boost_indicator)
     }
 
     private fun initViews() {
         if (gameControls == GameControls.TILT) {
-            findViewById<View>(R.id.wrapper_move_left).visibility = View.GONE
-            findViewById<View>(R.id.wrapper_move_right).visibility = View.GONE
+            findViewById<View>(R.id.layout_controls).visibility = View.GONE
             // initSensor() already been called in onCreate
         }
         else {
@@ -292,22 +392,26 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun refreshUI() {
+//        tvScore.text = String.format("%06d", gameManager.score)
+        tvScore.text = String.format("%d", gameManager.score)
+
         // 1. Refresh life count:
         updateLivesUI()
         // 2. Render player:
         gameGridRenderer.renderPlayer(gameManager.player)
         // 3. Render obstacles:
-        gameGridRenderer.renderObstacles(gameManager.activeObstacles)
+        gameGridRenderer.renderObstacles(gameManager.activeEntities)
     }
 
     private fun updateLivesUI() {
-        for (i in heartsView.indices) {
+        for (i in viewHearts.indices) {
             if (i < gameManager.currentHealth) {
-                heartsView[i]
+                viewHearts[i]
                     .setImageResource(R.drawable.ic_heart)
             }
             else {
-                heartsView[i]
+                val imageView = viewHearts[i]
+                viewHearts[i]
                     .setImageResource(R.drawable.ic_heart_empty)
             }
         }
@@ -332,11 +436,5 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
         startActivity(intent)
         finish()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // Clean up the grid renderer to prevent memory leaks
-        gameGridRenderer.release()
     }
 }

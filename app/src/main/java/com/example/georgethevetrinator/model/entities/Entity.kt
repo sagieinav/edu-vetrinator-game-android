@@ -1,9 +1,9 @@
 package com.example.georgethevetrinator.model.entities
 
-data class Obstacle (
+data class Entity (
     var row: Int,
     var col: Int,
-    var type: ObstacleType = ObstacleType.getRandom(),
+    var type: EntityType = EntityType.getRandomObstacle(),
 ) {
     val crashMsgResourceId: Int = type.crashMsgResourceId
     fun moveDown(maxRows: Int): Boolean {
@@ -12,6 +12,10 @@ data class Obstacle (
     }
 
     fun crash() {
-        this.type = ObstacleType.CRASHED
+        this.type = EntityType.CRASHED
+    }
+
+    fun collected() {
+        this.type = EntityType.COLLECTED
     }
 }

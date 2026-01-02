@@ -12,8 +12,9 @@
     <string name="obstacle_kings_crash_msg">הקלף שאני הכי שונא אותו זה זוג קינג</string>
     <string name="obstacle_eight_crash_msg">בריבר עוד 8 פטרוזיליה</string>
     <string name="obstacle_fallback_crash_msg">אווו... את הפלי</string>
+    <string name="reward_coin_collide_msg">Its a coin!</string>
 
-<!--  MESSAGES  -->
+    <!--  MESSAGES  -->
     <string name="game_over_msg">Game Over!</string>
     <string name="vibration_msg">Bzzzzzzzzzzzzzzzzzzzzzzzzzz!</string>
 

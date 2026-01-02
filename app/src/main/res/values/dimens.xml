@@ -1,6 +1,6 @@
 <resources>
 <!-- === HEARTS DASHBOARD (GameActivity) === -->
-    <dimen name="heart_icon_size">40dp</dimen>
+    <dimen name="heart_icon_size">34dp</dimen>
     <dimen name="heart_icon_spacing">6dp</dimen>
 
     <dimen name="hearts_box_margin">12dp</dimen>

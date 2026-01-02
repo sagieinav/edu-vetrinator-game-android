@@ -1,190 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_activity_game"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.game.GameActivity"
     android:background="@drawable/bg_pattern"
-    >
+    tools:context=".ui.game.GameActivity">
 
-    <!-- === 0. SEPARATOR LINE === -->
-    <!-- Sits just above the controls container -->
+    <include
+        android:id="@+id/layout_controls"
+        layout="@layout/view_game_controls"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/controls_area_height"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <View
         android:id="@+id/separator_controls"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/separator_height"
-        android:layout_above="@id/container_controls"
-
         android:background="@color/blue_parliament_stroke"
-        android:elevation="1dp" />
+        android:elevation="1dp"
+        app:layout_constraintBottom_toTopOf="@id/layout_controls"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
-    <!-- === 1. CONTROLS CONTAINER (Bottom) === -->
-    <RelativeLayout
-        android:id="@+id/container_controls"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/controls_area_height"
-        android:layout_alignParentBottom="true"
-
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        >
-
-        <!--  CONTROLS BACKGROUND OVERLAY  -->
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/offwhite"
-            android:alpha="0.75"
-            >
-        </androidx.appcompat.widget.AppCompatImageView>
-
-        <!-- LEFT BUTTON CONTAINER -->
-        <FrameLayout
-            android:id="@+id/wrapper_move_left"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginHorizontal="@dimen/button_margin_side"
-
-            android:padding="@dimen/button_internal_padding"
-            android:clipChildren="false"
-            android:clipToPadding="false">
-
-            <!-- Shadow -->
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/btn_arrow"
-                android:scaleType="fitCenter"
-
-                app:tint="@color/shadow_color"
-                app:tintMode="src_in"
-
-                android:translationX="@dimen/button_shadow_offset"
-                android:translationY="@dimen/button_shadow_offset" />
-
-            <!-- Button itself -->
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btn_move_left"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/btn_arrow"
-                android:scaleType="fitCenter"
-                android:background="@null"
-                android:contentDescription="@string/desc_move_left" />
-        </FrameLayout>
-
-        <!-- RIGHT BUTTON CONTAINER -->
-        <!-- scaleX="-1" for flipping direction from left to right -->
-        <FrameLayout
-            android:id="@+id/wrapper_move_right"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginHorizontal="@dimen/button_margin_side"
-
-
-            android:padding="@dimen/button_internal_padding"
-            android:scaleX="-1"
-            android:clipChildren="false"
-            android:clipToPadding="false">
-
-            <!-- Shadow -->
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/btn_arrow"
-                android:scaleType="fitCenter"
-
-                app:tint="@color/shadow_color"
-                app:tintMode="src_in"
-
-                android:translationX="@dimen/button_shadow_offset_mirrored"
-                android:translationY="@dimen/button_shadow_offset" />
-
-            <!-- Button itself -->
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btn_move_right"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/btn_arrow"
-                android:scaleType="fitCenter"
-                android:background="@null"
-                android:contentDescription="@string/desc_move_right" />
-        </FrameLayout>
-
-    </RelativeLayout>
-
-
-    <!-- === 2. MAIN GAME BOARD === -->
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container_game_board"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/container_controls">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipChildren="false"
+        app:layout_constraintBottom_toTopOf="@id/separator_controls"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- 2.1 HEARTS DASHBOARD -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/hearts_box_margin"
-
-            app:cardBackgroundColor="@color/glass_white"
-            app:cardCornerRadius="@dimen/hearts_box_corner_radius"
-            app:cardElevation="@dimen/hearts_box_elevation"
-            app:strokeColor="@color/offwhite_stroke"
-            app:strokeWidth="@dimen/hearts_box_stroke_width">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/hearts_box_padding_h"
-                android:paddingVertical="@dimen/hearts_box_padding_v"
-                android:layoutDirection="rtl"
-                android:layout_alignParentRight="true"
-                android:elevation="1dp"
-                >
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_heart1"
-                    android:layout_width="@dimen/heart_icon_size"
-                    android:layout_height="@dimen/heart_icon_size"
-                    android:layout_marginHorizontal="@dimen/heart_icon_spacing"
-                    app:srcCompat="@drawable/ic_heart" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_heart2"
-                    android:layout_width="@dimen/heart_icon_size"
-                    android:layout_height="@dimen/heart_icon_size"
-                    android:layout_marginHorizontal="@dimen/heart_icon_spacing"
-                    app:srcCompat="@drawable/ic_heart" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_heart3"
-                    android:layout_width="@dimen/heart_icon_size"
-                    android:layout_height="@dimen/heart_icon_size"
-                    android:layout_marginHorizontal="@dimen/heart_icon_spacing"
-                    app:srcCompat="@drawable/ic_heart" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- 2.2 GAME GRID -->
         <GridLayout
             android:id="@+id/grid_game_board"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alignmentMode="alignBounds">
-            <!-- Cells added dynamically in 'GameGridRenderer.kt' -->
-        </GridLayout>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alignmentMode="alignBounds"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-    </RelativeLayout>
+        <include
+            android:id="@+id/layout_hud"
+            layout="@layout/view_game_hud"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-</RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

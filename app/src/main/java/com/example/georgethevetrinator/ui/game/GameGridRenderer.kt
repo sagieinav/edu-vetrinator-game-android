@@ -7,8 +7,8 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import com.example.georgethevetrinator.R
-import com.example.georgethevetrinator.model.entities.Obstacle
-import com.example.georgethevetrinator.model.entities.ObstacleType
+import com.example.georgethevetrinator.model.entities.Entity
+import com.example.georgethevetrinator.model.entities.EntityType
 import com.example.georgethevetrinator.model.entities.Player
 
 class GameGridRenderer(
@@ -68,24 +68,24 @@ class GameGridRenderer(
     }
 
 
-    fun renderObstacles(obstacles: List<Obstacle>) {
+    fun renderObstacles(entities: List<Entity>) {
         // 1. Recycle, then clear grid
         recycleObstacleViews()
-        for (obs in obstacles) {
+        for (obs in entities) {
             renderObstacle(obs)
         }
     }
 
-    private fun renderObstacle(obstacle: Obstacle) {
-        val obstacleView = getObstacleView(obstacle.type)
+    private fun renderObstacle(entity: Entity) {
+        val obstacleView = getObstacleView(entity.type)
 
         // Insert to parent cell and add view:
-        val cell = cells[obstacle.row][obstacle.col]
+        val cell = cells[entity.row][entity.col]
         cell.addView(obstacleView)
     }
 
     // === REFRESH OBSTACLES VIEWS ===
-    private fun getObstacleView(type: ObstacleType): AppCompatImageView {
+    private fun getObstacleView(type: EntityType): AppCompatImageView {
         val view: AppCompatImageView
         if (obstaclePool.isNotEmpty()) {
             view = obstaclePool.removeAt(0) // Recycle old view

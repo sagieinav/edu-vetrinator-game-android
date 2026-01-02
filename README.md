@@ -135,18 +135,20 @@ To get a local copy up and running follow these simple example steps.
 - [x] Game grid improvements
     - [x] A wider 5-lane road
     - [x] A longer road
-- [ ] Player movement improvements
+- [x] Player movement improvements
     - [x] Tilt left/right for player movement
-    - [ ] Tilt forward/backwards for speed control
-- [ ] Score system
-    - [ ] Odometer
-    - [ ] Coins on road
+    - [x] Tilt forward/backwards for speed control
+- [x] Score system
+    - [x] Odometer
+    - [x] Coins on road
 - [x] Add game options to home screen
 	- [x] Game difficulty - slow/fast toggle
 	- [x] Sensor mode (tilt movement) - ON/OFF toggle
-- [ ] Sound effects
-	- [ ] Crash sounds
-	- [ ] Background music
+- [x] Sound effects
+	- [x] Crash sound
+	- [x] Boost sound
+	- [x] Coin collect sound
+	- [x] Background music
 - [ ] Leaderboards
 	- [x] Add button to access leaderboards from home screen
 	- [ ] Leaderboards will open as a fragment
@@ -158,6 +160,7 @@ To get a local copy up and running follow these simple example steps.
 - [ ] Modularize XML layouts
 - [ ] Implement Glide and ImageLoader for loading images
 - [ ] Use Data Binding to inject dynamc data into repetitive XML components
+- [x] Improve game spawn engine
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
