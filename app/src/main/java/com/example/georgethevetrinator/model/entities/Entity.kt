@@ -1,5 +1,7 @@
 package com.example.georgethevetrinator.model.entities
 
+import com.example.georgethevetrinator.model.enums.EntityType
+
 data class Entity (
     var row: Int,
     var col: Int,

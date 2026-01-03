@@ -2,7 +2,7 @@ package com.example.georgethevetrinator.ui.game
 
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
-import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +13,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -20,14 +21,15 @@ import androidx.lifecycle.lifecycleScope
 import com.example.georgethevetrinator.MyApp
 import com.example.georgethevetrinator.R
 import com.example.georgethevetrinator.logic.GameManager
-import com.example.georgethevetrinator.model.entities.GameControls
-import com.example.georgethevetrinator.model.entities.GameDifficulty
-import com.example.georgethevetrinator.model.entities.GameMode
-import com.example.georgethevetrinator.model.entities.MoveDirection
-import com.example.georgethevetrinator.model.logic.TiltDetector
-import com.example.georgethevetrinator.ui.home.HomeActivity
-import com.example.georgethevetrinator.ui.result.GameOverFragment
+import com.example.georgethevetrinator.model.enums.GameControls
+import com.example.georgethevetrinator.model.enums.GameDifficulty
+import com.example.georgethevetrinator.model.enums.GameMode
+import com.example.georgethevetrinator.model.enums.MoveDirection
+import com.example.georgethevetrinator.model.entities.ScoreRecord
+import com.example.georgethevetrinator.logic.TiltDetector
 import com.example.georgethevetrinator.utilities.Constants
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -74,6 +76,12 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     private var isBoosting = false
     private var lastBoostTime: Long = 0
 
+    // === LOCATION ===
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    // === TOAST ===
+    private var currentToast: Toast? = null
+
 
 //    ======================================== FUNCTIONS ========================================
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +95,7 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
         }
 
         // 1. Initialize services
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         tiltDetector = TiltDetector(
             this,
             onTilt = { direction -> movementInitiated(direction) },
@@ -119,6 +128,15 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
         super.onDestroy()
         // Clean up the grid renderer to prevent memory leaks
         gameGridRenderer.release()
+    }
+
+    fun showToast(message: String) {
+        // Cancel the existing toast if it is currently showing
+        currentToast?.cancel()
+
+        // Create and show the new toast:
+        currentToast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        currentToast?.show()
     }
 
 
@@ -179,7 +197,7 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     private fun handleObstacleHit() {
         audioManager.playCrashSfx()
         val crashMsg = getString(gameManager.crashMsgResourceId)
-        Toast.makeText(this, crashMsg, Toast.LENGTH_SHORT).show()
+        showToast(crashMsg)
         vibrationManager.vibrateShort()
     }
 
@@ -346,7 +364,43 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     }
 
     override fun onSaveClicked(score: Int) {
-        // TODO
+        navigateToRegistration(score)
+    }
+
+    private fun navigateToRegistration(score: Int) {
+        val registerFragment = RegisterScoreFragment.newInstance(score)
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right,
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right
+            )
+            .replace(R.id.game_fragment_container, registerFragment)
+            .addToBackStack(null) // Allows "Cancel" to work via popBackStack
+            .commit()
+    }
+
+
+    override fun onScoreRegistered(score: Int, name: String) {
+        // Check for permissions before requesting location
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                val lat = location?.latitude ?: 0.0
+                val lon = location?.longitude ?: 0.0
+
+                val newRecord = ScoreRecord(name, score, lat, lon)
+                (application as MyApp).scoreRepository.saveScore(newRecord)
+                Log.d("LOCATION_DEBUG", "Saved with: $lat, $lon")
+            }
+        } else {
+            // If no permission, save with 0.0, 0.0
+            val newRecord = ScoreRecord(name, score)
+            (application as MyApp).scoreRepository.saveScore(newRecord)
+            Log.d("LOCATION_DEBUG", "No permission!")
+        }
+        onHomeClicked()
     }
 
     override fun onRestartClicked() {

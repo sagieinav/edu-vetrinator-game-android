@@ -1,4 +1,4 @@
-package com.example.georgethevetrinator.ui.result
+package com.example.georgethevetrinator.ui.game
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,6 +26,7 @@ class GameOverFragment(): Fragment() {
         fun onRestartClicked()
         fun onHomeClicked()
         fun onSaveClicked(score: Int)
+        fun onScoreRegistered(score: Int, name: String)
     }
 
     // Attach GameActivity as the listener
@@ -46,8 +47,8 @@ class GameOverFragment(): Fragment() {
 
 //    ======================================== FUNCTIONS ========================================
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(
             R.layout.fragment_game_over,

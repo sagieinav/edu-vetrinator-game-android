@@ -31,4 +31,9 @@ class Constants() {
         const val VIBRATION_DURATION_SHORT: Long = 300L
         const val VIBRATION_DURATION_LONG: Long = 1_000L
     }
+
+    object SP {
+        const val DATA_FILE = "data_file"
+        const val LEADERBOARDS_KEY = "leaderboards_key"
+    }
 }

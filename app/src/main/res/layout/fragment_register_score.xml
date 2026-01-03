@@ -9,52 +9,93 @@
     android:focusable="true">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="24dp"
+        app:cardBackgroundColor="@color/offwhite"
+        app:strokeWidth="3dp"
+        app:strokeColor="@color/offwhite_stroke"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        >
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp"
-            android:gravity="center">
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="20dp"
+            >
 
-            <TextView
+            <include
+                android:id="@+id/register_score_view"
+                layout="@layout/view_result_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel_purl"
-                android:text="ENTER YOUR NAME"
-                android:textColor="@color/brown_george"
-                android:textSize="18sp" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_player_name"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/RoundedOutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_player_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Player Name"
-                    android:inputType="textCapCharacters"
-                    android:maxLength="10" />
+                app:boxStrokeColor="@color/selector_brown_opacity"
+                app:hintTextColor="@color/selector_brown_opacity"
+                android:textColorHint="@color/selector_brown_opacity"
+                app:boxStrokeWidthFocused="3dp"
+
+                app:layout_constraintTop_toBottomOf="@id/register_score_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_enter_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your name"
+                android:inputType="textCapWords"
+                android:maxLength="12"
+                android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_confirm_register"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="REGISTER" />
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/brown_george"
+                android:fontFamily="@font/pixel_purl"
+                android:text="REGISTER"
+                android:textSize="26sp"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toBottomOf="@id/til_player_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_cancel_register" />
 
-        </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/offwhite"
+                android:fontFamily="@font/pixel_purl"
+                android:text="CANCEL"
+                android:textSize="26sp"
+                android:textColor="@color/brown_george"
+                app:strokeColor="@color/brown_george"
+                app:strokeWidth="2dp"
+                app:layout_constraintTop_toBottomOf="@id/til_player_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_confirm_register"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

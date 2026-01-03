@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
      <uses-permission android:name="android.permission.VIBRATE" /> 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +17,10 @@
         android:theme="@style/Theme.GeorgeTheVetrinator"
         android:name=".MyApp"
         >
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+        <!-- If this project was pulled from GitHub, put your GoogleMaps API Key in `local.properties` under the name `MAPS_API_KEY` -->
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="true">

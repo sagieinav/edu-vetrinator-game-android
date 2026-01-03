@@ -5,7 +5,6 @@
     android:id="@+id/root_activity_result"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.result.ResultActivity"
     android:background="@drawable/bg_pattern">
 
     <!--  CONTROLS BACKGROUND OVERLAY  -->

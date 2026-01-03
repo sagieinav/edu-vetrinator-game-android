@@ -1,4 +1,4 @@
-package com.example.georgethevetrinator.model.logic
+package com.example.georgethevetrinator.logic
 
 import android.content.Context
 import android.os.Build

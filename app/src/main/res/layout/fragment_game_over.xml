@@ -14,6 +14,9 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="24dp"
         app:cardBackgroundColor="@color/offwhite"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/offwhite_stroke"
+        app:cardElevation="8dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,39 +53,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <LinearLayout
+            <include
+                android:id="@+id/result_score"
+                layout="@layout/view_result_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/container_result_score"
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_pali"
                 app:layout_constraintBottom_toTopOf="@id/btn_save_score"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tv_your_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pixel_purl"
-                    android:text="YOUR SCORE: "
-                    android:textColor="@color/brown_george"
-                    android:textSize="32sp"
- />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tv_result_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pixel_purl"
-                    android:text="000"
-                    android:textColor="@color/brown_george"
-                    android:textSize="36sp"
-                    android:textStyle="bold"
-                    />
-
-            </LinearLayout>
-
+                app:layout_constraintEnd_toEndOf="parent" />
 
 
             <androidx.appcompat.widget.AppCompatImageButton
@@ -92,8 +72,8 @@
                 android:layout_marginTop="20dp"
                 android:background="@null"
                 android:scaleType="fitCenter"
-                android:src="@drawable/btn_placeholder"
-                app:layout_constraintTop_toBottomOf="@id/container_result_score"
+                android:src="@drawable/btn_save_score"
+                app:layout_constraintTop_toBottomOf="@id/result_score"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

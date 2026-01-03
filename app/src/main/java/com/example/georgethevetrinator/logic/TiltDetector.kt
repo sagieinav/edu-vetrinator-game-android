@@ -1,11 +1,11 @@
-package com.example.georgethevetrinator.model.logic
+package com.example.georgethevetrinator.logic
 
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import com.example.georgethevetrinator.model.entities.MoveDirection
+import com.example.georgethevetrinator.model.enums.MoveDirection
 import com.example.georgethevetrinator.utilities.Constants
 
 class TiltDetector(

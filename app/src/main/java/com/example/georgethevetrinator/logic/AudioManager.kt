@@ -1,4 +1,4 @@
-package com.example.georgethevetrinator.model.logic
+package com.example.georgethevetrinator.logic
 
 import android.content.Context
 import android.media.AudioAttributes
@@ -56,7 +56,7 @@ class AudioManager private constructor(private val context: Context) {
         // 2. Initialize new track
         mediaPlayer = MediaPlayer.create(context, resId).apply {
             this.isLooping = isLooping
-            setVolume(0.3f, 0.3f)
+            setVolume(0.4f, 0.4f)
             start()
         }
     }

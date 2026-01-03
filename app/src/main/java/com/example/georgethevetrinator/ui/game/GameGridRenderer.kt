@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import com.example.georgethevetrinator.R
 import com.example.georgethevetrinator.model.entities.Entity
-import com.example.georgethevetrinator.model.entities.EntityType
+import com.example.georgethevetrinator.model.enums.EntityType
 import com.example.georgethevetrinator.model.entities.Player
 
 class GameGridRenderer(

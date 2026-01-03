@@ -1,11 +1,11 @@
 package com.example.georgethevetrinator.logic
 
-import com.example.georgethevetrinator.model.entities.GameControls
-import com.example.georgethevetrinator.model.entities.GameDifficulty
-import com.example.georgethevetrinator.model.entities.GameMode
-import com.example.georgethevetrinator.model.entities.MoveDirection
+import com.example.georgethevetrinator.model.enums.GameControls
+import com.example.georgethevetrinator.model.enums.GameDifficulty
+import com.example.georgethevetrinator.model.enums.GameMode
+import com.example.georgethevetrinator.model.enums.MoveDirection
 import com.example.georgethevetrinator.model.entities.Entity
-import com.example.georgethevetrinator.model.entities.EntityType
+import com.example.georgethevetrinator.model.enums.EntityType
 import com.example.georgethevetrinator.model.entities.Player
 import com.example.georgethevetrinator.utilities.Constants
 import kotlin.random.Random

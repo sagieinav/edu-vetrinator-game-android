@@ -1,4 +1,4 @@
-package com.example.georgethevetrinator.model.entities
+package com.example.georgethevetrinator.model.enums
 
 import com.example.georgethevetrinator.R
 

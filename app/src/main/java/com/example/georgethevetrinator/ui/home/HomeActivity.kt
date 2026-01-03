@@ -1,20 +1,25 @@
 package com.example.georgethevetrinator.ui.home
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.georgethevetrinator.MyApp
 import com.example.georgethevetrinator.R
-import com.example.georgethevetrinator.model.entities.GameControls
-import com.example.georgethevetrinator.model.entities.GameDifficulty
-import com.example.georgethevetrinator.model.entities.GameMode
+import com.example.georgethevetrinator.model.enums.GameControls
+import com.example.georgethevetrinator.model.enums.GameDifficulty
+import com.example.georgethevetrinator.model.enums.GameMode
 import com.example.georgethevetrinator.ui.game.GameActivity
+import com.example.georgethevetrinator.utilities.navigateToLeaderboards
 import com.google.android.material.textview.MaterialTextView
 
 class HomeActivity : AppCompatActivity() {
@@ -23,8 +28,17 @@ class HomeActivity : AppCompatActivity() {
     private val audioManager by lazy {
         (application as MyApp).audioManager
     }
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        if (permissions[android.Manifest.permission.ACCESS_FINE_LOCATION] == true) {
+            Log.d("PERMISSIONS", "Location Granted!")
+        }
+    }
+
     // === LINKED VIEWS (STATIC) ===
     private lateinit var btnPlay: AppCompatImageButton
+    private lateinit var btnLeaderboards: AppCompatImageButton
     private lateinit var switchMode: SwitchCompat
     private lateinit var tvNormal: MaterialTextView
     private lateinit var tvEndless: MaterialTextView
@@ -48,10 +62,13 @@ class HomeActivity : AppCompatActivity() {
             insets
         }
 
-        // 1. Find views
+        // 1. Services & Permissions
+        checkLocationPermissions()
+
+        // 2. Find views
         findViews()
 
-        // 2. Initialize viers
+        // 3. Initialize viers
         initViews()
     }
 
@@ -63,10 +80,22 @@ class HomeActivity : AppCompatActivity() {
         super.onPause()
     }
 
+    private fun checkLocationPermissions() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissionLauncher.launch(arrayOf(
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ))
+        }
+    }
+
 
     // === FIND & INITIALIZE VIEWS
     private fun findViews() {
         btnPlay = findViewById(R.id.btn_play)
+        btnLeaderboards = findViewById(R.id.btn_leaderboards)
 
         switchMode = findViewById(R.id.switch_mode)
         tvNormal = findViewById(R.id.tv_normal)
@@ -83,6 +112,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun initViews() {
         btnPlay.setOnClickListener { view: View -> startGame() }
+        btnLeaderboards.setOnClickListener { navigateToLeaderboards(R.id.home_fragment_container) }
         initSwitches()
     }
 
