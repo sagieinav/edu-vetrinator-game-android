@@ -152,15 +152,25 @@ To get a local copy up and running follow these simple example steps.
 - [ ] Leaderboards
 	- [x] Add button to access leaderboards from home screen
 	- [ ] Leaderboards will open as a fragment
+	- [ ] Use recycler view for the list
 	- [ ] Shows current top 10. Each row includes:
 		- [ ] Player name
 		- [ ] Score
 		- [ ] Location (when was this record set)
 	- [ ] Location will open as another (map) fragment
-- [ ] Modularize XML layouts
+- [x] Modularize XML layouts
+	- [x] `activity_home`
+	- [x] `activity_game`
+- [ ] Replace `activity_result` with a modularized fragment
 - [ ] Implement Glide and ImageLoader for loading images
 - [ ] Use Data Binding to inject dynamc data into repetitive XML components
 - [x] Improve game spawn engine
+- [ ] Change all custom Callbacks from functions to interfaces
+- [x] Modular `GameActivity` class. Introduce these classes:
+	- [x] `MyApp`
+	- [x] `TiltDetector`
+	- [x] `VibrationManager`
+- [ ] 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

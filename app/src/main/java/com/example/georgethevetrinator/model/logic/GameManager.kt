@@ -159,15 +159,23 @@ class GameManager(
         }
     }
 
-    private fun restartEndlessGame(crasher: Entity) {
-        currentHealth = maxHealth
-        gameResettingEntity = crasher
-    }
-
     // === PLAYER BEHAVIOR (MOVEMENT, COLLISION) ===
     fun movePlayer(direction: MoveDirection) {
         if (direction == MoveDirection.LEFT) player.moveLeft()
         else if (direction == MoveDirection.RIGHT) player.moveRight()
+    }
+
+
+    // === GAME RESETTING / RESTARTING ===
+    private fun restartEndlessGame(crasher: Entity) {
+        currentHealth = maxHealth
+        gameResettingEntity = crasher
+    }
+    fun resetGame() {
+        score = 0
+        currentHealth = maxHealth
+        activeEntities.clear()
+        player.col = cols / 2
     }
 }
 

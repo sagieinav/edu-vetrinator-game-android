@@ -2,18 +2,9 @@ package com.example.georgethevetrinator.ui.game
 
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
-import android.os.Build
 import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.os.VibratorManager
 import android.util.Log
 import android.view.View
 import android.widget.GridLayout
@@ -26,14 +17,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.georgethevetrinator.MyApp
 import com.example.georgethevetrinator.R
 import com.example.georgethevetrinator.logic.GameManager
 import com.example.georgethevetrinator.model.entities.GameControls
 import com.example.georgethevetrinator.model.entities.GameDifficulty
 import com.example.georgethevetrinator.model.entities.GameMode
 import com.example.georgethevetrinator.model.entities.MoveDirection
-import com.example.georgethevetrinator.model.logic.AudioManager
-import com.example.georgethevetrinator.ui.result.ResultActivity
+import com.example.georgethevetrinator.model.logic.TiltDetector
+import com.example.georgethevetrinator.ui.home.HomeActivity
+import com.example.georgethevetrinator.ui.result.GameOverFragment
 import com.example.georgethevetrinator.utilities.Constants
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Job
@@ -41,16 +34,19 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-class GameActivity : AppCompatActivity(), SensorEventListener {
+class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
 //    ======================================== ATTRIBUTES ========================================
-    // === GAME SETTINGS (initialized later. Now setting default fallback) ===
+    // === GAME SETTINGS & GAME MANAGER (initialized later. Now setting default fallback) ===
+    private lateinit var gameManager: GameManager
     var gameMode = GameMode.NORMAL
     var gameDifficulty = GameDifficulty.EASY
     var gameControls = GameControls.BUTTONS
-    // === GAME MANAGER, AUDIO MANAGER, GAME RENDERER ===
-    private lateinit var gameManager: GameManager
-    private lateinit var audioManager: AudioManager
+
+    // === GAME GRID ===
     private lateinit var gameGridRenderer: GameGridRenderer
+    private lateinit var gridView: GridLayout
+    private val ROWS = Constants.GameGrid.ROWS
+    private val COLS = Constants.GameGrid.COLS
 
     // === LINKED VIEWS (STATIC) ===
     private lateinit var tvScore: MaterialTextView
@@ -59,29 +55,27 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var btnMoveLeft: AppCompatImageButton
     private lateinit var btnMoveRight: AppCompatImageButton
 
-    // === GAME GRID ===
-    private lateinit var gridView: GridLayout
-    private val ROWS = Constants.GameGrid.ROWS
-    private val COLS = Constants.GameGrid.COLS
-
-    // === TIMER JOB ===
-    private lateinit var timerJob : Job
+    // === TIMER ===
+    private var timerJob: Job? = null
     private var startTime : Long = 0
 
-    // === VIBRATOR ===
-    private lateinit var vibrator: Vibrator
+    // === AUDIO MANAGER ===
+    private val audioManager by lazy {
+        (application as MyApp).audioManager
+    }
 
-    // === SENSOR MANAGER ===
-    private lateinit var sensorManager: SensorManager
-    private var accelerometer: Sensor? = null
-    private var xAxis = 0f
-    private var canMoveAgain = true
-    private var lastYAxis = 0f
+    // === VIBRATION MANAGER ===
+    private val vibrationManager by lazy {
+        (application as MyApp).vibrationManager
+    }
+
+    // === TILT DETECTOR ===
+    private lateinit var tiltDetector: TiltDetector
     private var isBoosting = false
     private var lastBoostTime: Long = 0
 
 
-    //    ======================================== FUNCTIONS ========================================
+//    ======================================== FUNCTIONS ========================================
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -93,9 +87,11 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         }
 
         // 1. Initialize services
-        initVibrator()
-        initSensor()
-        audioManager = AudioManager(applicationContext)
+        tiltDetector = TiltDetector(
+            this,
+            onTilt = { direction -> movementInitiated(direction) },
+            onFlick = { triggerBoost() }
+        )
 
         // 2. Find views
         findViews()
@@ -103,6 +99,26 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         // 3. Initialize game and its views
         initGame()
         initViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startTimer()
+        if (gameControls == GameControls.TILT) {
+            tiltDetector.start()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timerJob?.cancel()
+        tiltDetector.stop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clean up the grid renderer to prevent memory leaks
+        gameGridRenderer.release()
     }
 
 
@@ -121,7 +137,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
             gameControls
         )
 
-        // 3. Event Callbacks (onCollision, onGameOver)
+        // 3. Internal Event Callbacks
         initEventCallbacks()
     }
 
@@ -155,49 +171,52 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun initEventCallbacks() {
-        // Initialize the 'onCollision' event:
-        gameManager.onObstacleHit = {
-            audioManager.playCrashSfx()
-            val crashMsg = getString(gameManager.crashMsgResourceId)
-            Toast.makeText(this, crashMsg, Toast.LENGTH_SHORT).show()
-            vibrateShort()
+        gameManager.onObstacleHit = { handleObstacleHit() }
+        gameManager.onCoinCollected = { handleCoinCollected() }
+        gameManager.onGameOver = { handleGameOver() }
+    }
+
+    private fun handleObstacleHit() {
+        audioManager.playCrashSfx()
+        val crashMsg = getString(gameManager.crashMsgResourceId)
+        Toast.makeText(this, crashMsg, Toast.LENGTH_SHORT).show()
+        vibrationManager.vibrateShort()
+    }
+
+    private fun handleCoinCollected() {
+        audioManager.playCoinSfx()
+        animateScoreCoin()
+    }
+
+    private fun animateScoreCoin() {
+        val colorFrom = ContextCompat.getColor(this, R.color.brown_george)
+        val colorTo = Color.parseColor("#FFD700") // Gold
+
+        // 1. Transition to Gold
+        ObjectAnimator.ofInt(tvScore, "textColor", colorFrom, colorTo).apply {
+            duration = 250
+            setEvaluator(ArgbEvaluator())
+            start()
         }
 
-        gameManager.onCoinCollected = {
-            audioManager.playCoinSfx()
-            val colorFrom = ContextCompat.getColor(this, R.color.brown_george)
-            val colorTo = Color.parseColor("#FFD700") // Gold
-
-            // 1. Transition to Gold
-            ObjectAnimator.ofInt(tvScore, "textColor", colorFrom, colorTo).apply {
-                duration = 250
+        // 2. Return to Original after 0.8 second
+        lifecycleScope.launch {
+            delay(800)
+            ObjectAnimator.ofInt(tvScore, "textColor", colorTo, colorFrom).apply {
+                duration = 350
                 setEvaluator(ArgbEvaluator())
                 start()
             }
-
-            // 2. Return to Original after 0.8 second
-            lifecycleScope.launch {
-                delay(800)
-                ObjectAnimator.ofInt(tvScore, "textColor", colorTo, colorFrom).apply {
-                    duration = 350
-                    setEvaluator(ArgbEvaluator())
-                    start()
-                }
-            }
-        }
-
-        // Initialize the 'onGameOver' event:
-        gameManager.onGameOver = {
-            vibrateLong()
-
-            Log.d(getString(R.string.log_tag_game_status), getString(R.string.game_over_msg))
-            timerJob.cancel()
-            lifecycleScope.launch {
-                delay(500)
-                finishGame()
-            }
         }
     }
+
+    private fun handleGameOver() {
+        vibrationManager.vibrateLong()
+        timerJob?.cancel()
+        audioManager.startGameOverMusic()
+        showGameOver() // Triggers `GameOverFragment`
+    }
+
 
     // === TIMER ===
     private fun startTimer() {
@@ -213,155 +232,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        audioManager.startMusic()
-        startTimer()
-        if (gameControls == GameControls.TILT) {
-            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        audioManager.pauseMusic()
-        timerJob.cancel()
-        if (gameControls == GameControls.TILT) {
-            sensorManager.unregisterListener(this)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // Clean up the grid renderer to prevent memory leaks
-        gameGridRenderer.release()
-
-        // Clean up audio manager
-        audioManager.stopAll()
-    }
-
-
-
-
-    // === VIBRATOR ===
-    private fun initVibrator() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 12+
-            val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-            vibrator = vibratorManager.defaultVibrator
-        } else { // Backwards compatibility for older Android versions
-            vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        }
-    }
-    private fun vibrateShort() {
-        // Log it to confirm it's working:
-        Log.d("VibrationCheck", getString(R.string.vibration_msg))
-
-        vibrator.vibrate(VibrationEffect.createOneShot(
-            Constants.GameFeel.VIBRATION_DURATION_SHORT,
-            VibrationEffect.DEFAULT_AMPLITUDE)
-        )
-    }
-
-    private fun vibrateLong() {
-        // Log it to confirm it's working:
-        Log.d("VibrationCheck", getString(R.string.vibration_msg))
-
-        vibrator.vibrate(VibrationEffect.createOneShot(
-            Constants.GameFeel.VIBRATION_DURATION_LONG,
-            VibrationEffect.DEFAULT_AMPLITUDE)
-        )
-    }
-
-    // === SENSOR MANAGER ===
-    private fun initSensor() {
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-    }
-
-    override fun onSensorChanged(event: SensorEvent?) {
-        if (gameControls != GameControls.TILT || event == null) return
-
-        val rawXAxis = event.values[0]
-        val rawYAxis = event.values[1]
-        xAxis = Constants.Sensor.TILT_ALPHA * rawXAxis + (1 - Constants.Sensor.TILT_ALPHA) * xAxis
-
-        if (Math.abs(xAxis) < Constants.Sensor.NEUTRAL_ZONE) canMoveAgain = true
-        if (canMoveAgain) processHorizontalTilt(xAxis)
-
-        processVerticalFlick(rawYAxis)
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // Not needed, implementing empty function to satisfy interface
-    }
-
-    fun processHorizontalTilt(xAxis: Float) {
-        if (xAxis > Constants.Sensor.TILT_SIDE_THRESHOLD) {
-            movementInitiated(MoveDirection.LEFT)
-            canMoveAgain = false
-        }
-        else if (xAxis < -Constants.Sensor.TILT_SIDE_THRESHOLD) {
-            movementInitiated(MoveDirection.RIGHT)
-            canMoveAgain = false
-        }
-    }
-
-    private fun processVerticalFlick(currentY: Float) {
-        val currentTime = System.currentTimeMillis()
-        val deltaY = currentY - lastYAxis
-        lastYAxis = currentY
-
-        // 1. Check if already boosting or in cooldown
-        if (isBoosting || (currentTime - lastBoostTime < Constants.Sensor.BOOST_COOLDOWN)) {
-            return
-        }
-
-        // 2. Detect forward flick
-        if (deltaY < -Constants.Sensor.FLICK_THRESHOLD) {
-            triggerBoost()
-        }
-    }
-
-private fun triggerBoost() {
-    isBoosting = true
-    audioManager.playBoostSfx()
-    lastBoostTime = System.currentTimeMillis()
-    gameManager.speedMultiplier = Constants.Sensor.BOOST_SPEED
-
-    ivBoostIndicator.visibility = View.VISIBLE
-    ivBoostIndicator.alpha = 0f
-    ivBoostIndicator.scaleX = 0f
-    ivBoostIndicator.scaleY = 0f
-    ivBoostIndicator.animate()
-        .alpha(1f)
-        .scaleX(1.2f)
-        .scaleY(1.2f)
-        .setDuration(200)
-        .withEndAction {
-            ivBoostIndicator.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
-        }.start()
-
-    // Auto-Reset the timer when boost ends
-    lifecycleScope.launch {
-        delay(Constants.Sensor.BOOST_DURATION)
-        gameManager.speedMultiplier = 1.0f
-
-        ivBoostIndicator.animate()
-            .alpha(0f)
-            .scaleX(0f)
-            .scaleY(0f)
-            .setDuration(300)
-            .withEndAction {
-                ivBoostIndicator.visibility = View.INVISIBLE
-                isBoosting = false
-            }.start()
-    }
-}
-
-
-
-
-    // === FIND & INITIALIZE VIEWS
+    // === VIEWS (FIND, INIT, REFRESH) ===
     private fun findViews() {
         gridView = findViewById(R.id.grid_game_board)
         btnMoveLeft = findViewById(R.id.btn_move_left)
@@ -392,8 +263,7 @@ private fun triggerBoost() {
     }
 
     private fun refreshUI() {
-//        tvScore.text = String.format("%06d", gameManager.score)
-        tvScore.text = String.format("%d", gameManager.score)
+        tvScore.text = gameManager.score.toString()
 
         // 1. Refresh life count:
         updateLivesUI()
@@ -410,7 +280,6 @@ private fun triggerBoost() {
                     .setImageResource(R.drawable.ic_heart)
             }
             else {
-                val imageView = viewHearts[i]
                 viewHearts[i]
                     .setImageResource(R.drawable.ic_heart_empty)
             }
@@ -423,18 +292,85 @@ private fun triggerBoost() {
         gameManager.movePlayer(clickedDirection)
         gameGridRenderer.renderPlayer(gameManager.player)
     }
+    private fun triggerBoost() {
+        isBoosting = true
+        audioManager.playBoostSfx()
+        lastBoostTime = System.currentTimeMillis()
+        gameManager.speedMultiplier = Constants.Sensor.BOOST_SPEED
 
+        ivBoostIndicator.visibility = View.VISIBLE
+        ivBoostIndicator.alpha = 0f
+        ivBoostIndicator.scaleX = 0f
+        ivBoostIndicator.scaleY = 0f
+        ivBoostIndicator.animate()
+            .alpha(1f)
+            .scaleX(1.2f)
+            .scaleY(1.2f)
+            .setDuration(200)
+            .withEndAction {
+                ivBoostIndicator.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+            }.start()
 
+        // Auto-Reset the timer when boost ends
+        lifecycleScope.launch {
+            delay(Constants.Sensor.BOOST_DURATION)
+            gameManager.speedMultiplier = 1.0f
+
+            ivBoostIndicator.animate()
+                .alpha(0f)
+                .scaleX(0f)
+                .scaleY(0f)
+                .setDuration(300)
+                .withEndAction {
+                    ivBoostIndicator.visibility = View.INVISIBLE
+                    isBoosting = false
+                }.start()
+        }
+    }
     private fun advanceGame() {
         gameManager.advanceGame()
         refreshUI()
     }
 
+    // === GAME OVER FRAGMENT CALLBACKS ===
+    private fun showGameOver() {
+        val gameOverFragment = GameOverFragment.newInstance(gameManager.score)
+        gameOverFragment.setListener(this)
 
-    private fun finishGame() {
-        val intent = Intent(this, ResultActivity::class.java)
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out)
+            .replace(R.id.game_fragment_container, gameOverFragment)
+            .commit()
+    }
 
-        startActivity(intent)
+    override fun onSaveClicked(score: Int) {
+        // TODO
+    }
+
+    override fun onRestartClicked() {
+        audioManager.startMusic()
+        // 1. Remove the GameOverFragment
+        val fragment = supportFragmentManager.findFragmentById(R.id.game_fragment_container)
+        if (fragment != null) {
+            supportFragmentManager.beginTransaction()
+                .remove(fragment)
+                .commit()
+        }
+
+        // 2. Reset the logic via GameManager
+        gameManager.resetGame()
+
+        // 3. Clear the UI
+        refreshUI()
+
+        // 4. Restart the loop
+        startTimer()
+    }
+
+    override fun onHomeClicked() {
+        audioManager.startMusic()
         finish()
     }
 }

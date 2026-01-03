@@ -28,7 +28,7 @@ class Constants() {
     }
 
     object GameFeel {
-        const val VIBRATION_DURATION_SHORT: Long = 500L
-        const val VIBRATION_DURATION_LONG: Long = 1_00L
+        const val VIBRATION_DURATION_SHORT: Long = 300L
+        const val VIBRATION_DURATION_LONG: Long = 1_000L
     }
 }

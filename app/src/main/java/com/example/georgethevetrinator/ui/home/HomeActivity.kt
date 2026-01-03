@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.georgethevetrinator.MyApp
 import com.example.georgethevetrinator.R
 import com.example.georgethevetrinator.model.entities.GameControls
 import com.example.georgethevetrinator.model.entities.GameDifficulty
@@ -18,6 +19,10 @@ import com.google.android.material.textview.MaterialTextView
 
 class HomeActivity : AppCompatActivity() {
 //    ======================================== ATTRIBUTES ========================================
+    // === SERVICES ===
+    private val audioManager by lazy {
+        (application as MyApp).audioManager
+    }
     // === LINKED VIEWS (STATIC) ===
     private lateinit var btnPlay: AppCompatImageButton
     private lateinit var switchMode: SwitchCompat
@@ -50,6 +55,14 @@ class HomeActivity : AppCompatActivity() {
         initViews()
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
 
     // === FIND & INITIALIZE VIEWS
     private fun findViews() {
@@ -69,7 +82,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        btnPlay.setOnClickListener { view: View -> startGame(GameMode.NORMAL) }
+        btnPlay.setOnClickListener { view: View -> startGame() }
         initSwitches()
     }
 
@@ -96,7 +109,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun startGame(gameMode: GameMode) {
+    private fun startGame() {
         val intent = Intent(this, GameActivity::class.java)
 
         val selectedMode = if (switchMode.isChecked) GameMode.ENDLESS.name else GameMode.NORMAL.name
@@ -107,7 +120,6 @@ class HomeActivity : AppCompatActivity() {
         intent.putExtra("GAME_CONTROLS", selectedControls)
 
         startActivity(intent)
-        finish()
     }
 
 }
