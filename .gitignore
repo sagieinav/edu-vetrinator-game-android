@@ -1,8 +1,14 @@
+# Keep these
+!/.idea/gradle.xml
+!/.idea/compiler.xml
+!/.idea/vcs.xml
+!/.idea/misc.xml
+!/.idea/modules.xml
+
+
+# Ignore these
 *.iml
 .gradle
-.kotlin
-*/build
-/build
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -11,6 +17,7 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 .DS_Store
+/build
 /captures
 .externalNativeBuild
 .cxx
