@@ -10,13 +10,13 @@
     android:focusable="true">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="320dp"
+        android:layout_width="@dimen/dialog_width_standard"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="24dp"
+        app:cardCornerRadius="@dimen/card_corner_radius"
         app:cardBackgroundColor="@color/offwhite"
-        app:strokeWidth="2dp"
+        app:strokeWidth="@dimen/ui_card_stroke_width"
         app:strokeColor="@color/offwhite_stroke"
-        app:cardElevation="8dp"
+        app:cardElevation="@dimen/card_elevation_big"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,16 +25,16 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="24dp">
+            android:padding="@dimen/spacing_l">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_game_over"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pixel_purl"
-                android:text="GAME OVER"
+                android:text="@string/game_over"
                 android:textColor="@color/brown_george"
-                android:textSize="60sp"
+                android:textSize="@dimen/text_title_huge"
                 android:textStyle="bold"
                 android:includeFontPadding="false"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -46,9 +46,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pixel_purl"
-                android:text="Et ha'pali..."
+                android:text="@string/et_ha_pali"
                 android:textColor="@color/brown_george"
-                android:textSize="32sp"
+                android:textSize="@dimen/pali_text_size"
                 app:layout_constraintTop_toBottomOf="@id/tv_game_over"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -58,21 +58,21 @@
                 layout="@layout/view_result_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/menu_buttons_margin"
                 app:layout_constraintTop_toBottomOf="@id/tv_pali"
                 app:layout_constraintBottom_toTopOf="@id/btn_save_score"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_save_score"
                 android:layout_width="200dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="@dimen/menu_button_height_small"
+                android:layout_marginTop="@dimen/menu_buttons_margin"
                 android:background="@null"
                 android:scaleType="fitCenter"
                 android:src="@drawable/btn_save_score"
+                android:contentDescription="@string/save_score"
                 app:layout_constraintTop_toBottomOf="@id/result_score"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -80,11 +80,12 @@
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_restart"
                 android:layout_width="200dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="12dp"
+                android:layout_height="@dimen/menu_button_height_small"
+                android:layout_marginTop="@dimen/ui_container_margin"
                 android:background="@null"
                 android:scaleType="fitCenter"
                 android:src="@drawable/btn_restart"
+                android:contentDescription="@string/restart_game"
                 app:layout_constraintTop_toBottomOf="@id/btn_save_score"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -92,11 +93,12 @@
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_back_home"
                 android:layout_width="200dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="12dp"
+                android:layout_height="@dimen/menu_button_height_small"
+                android:layout_marginTop="@dimen/ui_container_margin"
                 android:background="@null"
                 android:scaleType="fitCenter"
                 android:src="@drawable/btn_back_home"
+                android:contentDescription="@string/back_home"
                 app:layout_constraintTop_toBottomOf="@id/btn_restart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

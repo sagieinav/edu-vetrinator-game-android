@@ -3,4 +3,4 @@
 android:id="@+id/player"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-srcCompat="@drawable/player_george" />
+srcCompat="@drawable/img_player_george" />

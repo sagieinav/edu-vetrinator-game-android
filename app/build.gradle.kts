@@ -7,13 +7,13 @@ plugins {
 
 
 android {
-    namespace = "com.example.georgethevetrinator"
+    namespace = "dev.sagi.georgethevetrinator"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.example.georgethevetrinator"
+        applicationId = "dev.sagi.georgethevetrinator"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
@@ -45,9 +45,20 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    sourceSets {
+        getByName("main") {
+            res.srcDirs(
+                "src/main/res",
+                "src/main/res/layouts",
+                "src/main/res/layouts/game"
+            )
+        }
+    }
 }
 
 dependencies {
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation(libs.androidx.core.ktx)

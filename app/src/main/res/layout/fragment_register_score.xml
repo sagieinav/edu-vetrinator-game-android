@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_game_result"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#99000000"
@@ -9,24 +10,22 @@
     android:focusable="true">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="320dp"
+        android:layout_width="@dimen/dialog_width_standard"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="24dp"
+        app:cardCornerRadius="@dimen/card_corner_radius"
         app:cardBackgroundColor="@color/offwhite"
-        app:strokeWidth="3dp"
+        app:strokeWidth="@dimen/card_stroke_width"
         app:strokeColor="@color/offwhite_stroke"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="16dp"
-            android:paddingHorizontal="20dp"
-            >
+            android:paddingVertical="@dimen/spacing_m"
+            android:paddingHorizontal="@dimen/menu_buttons_margin">
 
             <include
                 android:id="@+id/register_score_view"
@@ -42,38 +41,38 @@
                 style="@style/RoundedOutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_m"
 
                 app:boxStrokeColor="@color/selector_brown_opacity"
                 app:hintTextColor="@color/selector_brown_opacity"
                 android:textColorHint="@color/selector_brown_opacity"
-                app:boxStrokeWidthFocused="3dp"
+                app:boxStrokeWidthFocused="@dimen/card_stroke_width"
 
                 app:layout_constraintTop_toBottomOf="@id/register_score_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_enter_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter your name"
-                android:inputType="textCapWords"
-                android:maxLength="12"
-                android:textColor="@color/black" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_enter_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enter_your_name"
+                    android:inputType="textCapWords"
+                    android:maxLength="12"
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_confirm_register"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_l"
                 android:backgroundTint="@color/brown_george"
                 android:fontFamily="@font/pixel_purl"
-                android:text="REGISTER"
-                android:textSize="26sp"
+                android:text="@string/register"
+                android:textSize="@dimen/text_size_medium"
                 android:textColor="@color/white"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/spacing_s"
                 app:layout_constraintTop_toBottomOf="@id/til_player_name"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,14 +82,14 @@
                 android:id="@+id/btn_cancel_register"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_l"
                 android:backgroundTint="@color/offwhite"
                 android:fontFamily="@font/pixel_purl"
-                android:text="CANCEL"
-                android:textSize="26sp"
+                android:text="@string/cancel"
+                android:textSize="@dimen/text_size_medium"
                 android:textColor="@color/brown_george"
                 app:strokeColor="@color/brown_george"
-                app:strokeWidth="2dp"
+                app:strokeWidth="@dimen/ui_card_stroke_width"
                 app:layout_constraintTop_toBottomOf="@id/til_player_name"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_confirm_register"

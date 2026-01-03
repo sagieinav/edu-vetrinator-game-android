@@ -7,17 +7,17 @@
     android:layout_height="wrap_content"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:padding="@dimen/hearts_box_margin">
+    android:padding="@dimen/ui_container_margin">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_score"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:cardBackgroundColor="@color/glass_white"
-        app:cardCornerRadius="@dimen/hearts_box_corner_radius"
-        app:cardElevation="@dimen/hearts_box_elevation"
+        app:cardCornerRadius="@dimen/ui_card_corner_radius"
+        app:cardElevation="@dimen/ui_card_elevation"
         app:strokeColor="@color/offwhite_stroke"
-        app:strokeWidth="@dimen/hearts_box_stroke_width"
+        app:strokeWidth="@dimen/ui_card_stroke_width"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -27,24 +27,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp"
+            android:paddingHorizontal="@dimen/spacing_m"
+            android:paddingVertical="@dimen/spacing_s"
             android:fontFamily="@font/pixel_purl"
             android:text="0"
             android:textColor="@color/brown_george"
-            android:textSize="40sp"
+            android:textSize="@dimen/text_title"
             android:includeFontPadding="false" />
     </com.google.android.material.card.MaterialCardView>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_boost_indicator"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/item_icon_size_large"
+        android:layout_height="@dimen/item_icon_size_large"
         app:srcCompat="@drawable/ic_boost"
         app:layout_constraintTop_toBottomOf="@id/card_score"
         app:layout_constraintStart_toStartOf="@id/card_score"
         android:visibility="invisible"
-        />
+        android:contentDescription="@string/boost_active" />
 
 
     <com.google.android.material.card.MaterialCardView
@@ -52,10 +52,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/glass_white"
-        app:cardCornerRadius="@dimen/hearts_box_corner_radius"
-        app:cardElevation="@dimen/hearts_box_elevation"
+        app:cardCornerRadius="@dimen/ui_card_corner_radius"
+        app:cardElevation="@dimen/ui_card_elevation"
         app:strokeColor="@color/offwhite_stroke"
-        app:strokeWidth="@dimen/hearts_box_stroke_width"
+        app:strokeWidth="@dimen/ui_card_stroke_width"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -73,21 +73,24 @@
                 android:layout_width="@dimen/heart_icon_size"
                 android:layout_height="@dimen/heart_icon_size"
                 android:layout_marginHorizontal="@dimen/heart_icon_spacing"
-                app:srcCompat="@drawable/ic_heart" />
+                app:srcCompat="@drawable/ic_heart"
+                android:contentDescription="@null" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_heart2"
                 android:layout_width="@dimen/heart_icon_size"
                 android:layout_height="@dimen/heart_icon_size"
                 android:layout_marginHorizontal="@dimen/heart_icon_spacing"
-                app:srcCompat="@drawable/ic_heart" />
+                app:srcCompat="@drawable/ic_heart"
+                android:contentDescription="@null" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_heart3"
                 android:layout_width="@dimen/heart_icon_size"
                 android:layout_height="@dimen/heart_icon_size"
                 android:layout_marginHorizontal="@dimen/heart_icon_spacing"
-                app:srcCompat="@drawable/ic_heart" />
+                app:srcCompat="@drawable/ic_heart"
+                android:contentDescription="@null" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

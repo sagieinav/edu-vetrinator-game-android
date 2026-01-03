@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_settings"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/menu_buttons_margin"
         app:cardBackgroundColor="@color/offwhite"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="6dp"
+        app:cardCornerRadius="@dimen/row_corner_radius"
+        app:cardElevation="@dimen/settings_card_elevation"
         app:strokeColor="@color/brown_george"
-        app:strokeWidth="3dp"
+        app:strokeWidth="@dimen/card_stroke_width"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp" >
+            android:padding="@dimen/spacing_l">
 
             <include
                 layout="@layout/view_setting_row_mode"
@@ -44,18 +43,15 @@
         android:id="@+id/tv_settings_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GAME SETTINGS"
+        android:text="@string/settings_title"
         android:fontFamily="@font/pixel_purl"
-        android:textSize="34sp"
+        android:textSize="@dimen/heart_icon_size"
         android:textStyle="bold"
         android:textColor="@color/brown_george"
-
         android:background="@color/offwhite"
-        android:paddingHorizontal="12dp"
-
-        android:elevation="7dp"
+        android:paddingHorizontal="@dimen/ui_container_margin"
+        android:elevation="@dimen/settings_title_elevation"
         android:outlineProvider="none"
-
         app:layout_constraintTop_toTopOf="@id/card_settings"
         app:layout_constraintBottom_toTopOf="@id/card_settings"
         app:layout_constraintStart_toStartOf="@id/card_settings"

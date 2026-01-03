@@ -1,6 +1,5 @@
 <a id="readme-top"></a>
 
-
 <h1 align="center">
   <a href="https://github.com/sagieinav/edu-vetrinator-game-android"><img src="https://github.com/user-attachments/assets/f40e2544-97ac-4f3d-ba43-0545080cc45d" alt="Logo" width="200"></a>
   <br>
@@ -8,9 +7,8 @@
   <br>
 </h1>
 
-
 <p align="center">
-	<b>An educational Android arcade game featuring dynamic obstacle avoidance and pixel-art aesthetics.</b>
+	<b>An educational Android arcade game featuring dynamic obstacle avoidance, sensor-based controls, and pixel-art aesthetics.</b>
 </p>
 <p align="center">
 	<a href="https://github.com/sagieinav/edu-vetrinator-game-android/issues">Report Bug</a>
@@ -22,114 +20,76 @@
 
 ---
 
-  <!-- Single simplified row of key tech badges -->
   <p align="center">
     <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat&logo=kotlin&logoColor=white" alt="Kotlin" />
     <img src="https://img.shields.io/badge/Android-3DDC84?style=flat&logo=android&logoColor=white" alt="Android" />
+    <img src="https://img.shields.io/badge/Google_Maps-4285F4?style=flat&logo=googlemaps&logoColor=white" alt="Google Maps" />
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License" />
   </p>
 
+## About The Project
+George The Vetrinator is an Android arcade game developed as part of the 'UI Development' Course in my Computer Science BSc.  It is the first app I've ever developed.
 
-
-<!-- ABOUT THE PROJECT -->
-## 1 About The Project
-George The Vetrinator is an Android arcade game developed as part of the 'UI Development' Course in my Computer Science BSc.
-
-The game is built using Kotlin in Android Studio, and features a custom grid-based engine, Android-optimized MVC architecture, and retro pixel-art aesthetics.
+The game is built using Kotlin in Android Studio and features a custom grid-based engine, Android-optimized MVC architecture, and retro pixel-art aesthetics.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- KEY FEATURES -->
-
-## 2 Key Features
-- **Dynamic Grid Engine**: The game's grid is configured as GridLayout and initialized in runtime with Kotlin.
-- **Optimized MVC Architecture**: Implements a clean separation of concerns:
-	- **Model**: Decoupled into  entities  (Data/State) and  logic  (Business Rules).
-	- **View**: Composed of XML layouts, the GameGridRenderer , and the UI-management logic within the Activities.
-	- **Controller**: The Activities (GameActivity, etc.), which handle user input and lifecycle events to bridge the Model and View.
-- **Haptic Feedback**: Vibration and toast messages on collisions.
-- **PixelArt-style UI Design**: The UI is Parliament-themed, and uses PixelArt style.
+## Key Features
+- **Dynamic Control Systems**: Toggle between classic button-based navigation and an immersive **Tilt Sensor (Accelerometer)** mode.
+- **Persistent Leaderboard**: Tracks the top 10 scores locally using SharedPreferences, recording player names, scores, and physical locations.
+- **Location Services**: Integrated Google Maps API to visualize exactly where high scores were achieved.
+- **Optimized MVC Architecture**: Implements a clean separation between data entities, game logic, and UI controllers.
+- **Advanced Asset Loading**: Utilizes **Glide** and a custom **SignalImageLoader** for high-performance bitmap management.
+- **Haptic Feedback**: Intelligent vibration patterns and visual indicators synchronized with game events (collisions, boosts, collections).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- STRUCTURE -->
-## 3 Structure
-The project follows a modular optimized MVC structure designed for scalability and readability:
-```
-├── model                  # Model Layer
-│   ├── entities           # Data classes (Player, Obstacle, GameMode)
-│   └── logic              # Game logic (GameManager)
-├── ui                     # View & Controller Layers
-│   ├── game               # Game loop, Activity, and Grid Renderer
-│   ├── home               # Main Menu
-│   └── result             # Result screen
-└── utilities              # Shared constants and helpers
-```
+## Structure
+The project utilizes a feature-layered package structure to separate concerns and improve maintainability:
+
+**data** # Data persistence (Local Repository, SharedPreferences)  
+**interfaces** # Shared callbacks and listener interfaces  
+**logic** # Business logic (GameManager, Audio, Sensors, Haptics)  
+**model** # Domain entities (Player, Obstacle, Record) and Enums  
+**ui** # View & Controller Layers  
+... **adapters** # RecyclerView adapters for Leaderboards  
+... **game** # Game engine, Fragments (Game Over, Register), and Grid Renderer  
+... **home** # Main Menu and Settings View logic  
+... **leaderboards** # Map and Scoreboard Fragment implementations  
+**utilities** # Global Constants, Navigation Helpers, and ImageLoader  
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- CLASSES OVERVIEW -->
-## 4 Classes Overview
 
-The project relies on three main Activities and several helper classes to manage game logic.
-
-Below is a table detailing the **key components** and their roles.
-
-| Class Name          | Layer                 | Description                                                                              |
-| :------------------ | :-------------------- | :--------------------------------------------------------------------------------------- |
-| `GameManager`       | **Model (Logic)**     | The core engine. Calculates movement, collisions, and state changes.                     |
-| `Player / Obstacle` | **Model (Entity)**    | Data classes holding state (position, type, health) without behavior.                    |
-| `GameActivity`      | **Controller / View** | Acts as the main controller (input/sensors) while also managing the high-level UI state. |
-| `GameGridRenderer`  | **View Helper**       | A dedicated class that handles the complex rendering logic for the game grid.            |
-| `HomeActivity`      | **Controller / View** | Handles navigation and game mode selection.                                              |
-| `ResultActivity`    | **Controller / View** | Handles 'Game Over' scenario, restart/back to home selection.                            |
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- DEMONSTRATION -->
-## 5 Demonstration
+## Demonstration
 https://github.com/user-attachments/assets/444a7d7a-eb16-4d80-a552-5ec852fc135a
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- GETTING STARTED -->
-## 6 Getting Started
+## Getting Started
 
-To get a local copy up and running follow these simple example steps.
-### 6.1 Prerequisites
+### Prerequisites
+* **Android Studio**: Ladybug or newer
+* **Kotlin**: Version 1.9+
+* **Min SDK**: 26
 
-*   **Android Studio**: Ladybug or newer (https://developer.android.com/studio)
-*   **Kotlin**: Version 1.9+
-*   **Min SDK**: 26
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-  
-
-### 6.2 Installation
-1. Clone the repo
-   ```sh
-   git clone https://github.com/sagieinav/edu-vetrinator-game-android.git
-   ```
-2. Open the project in Android Studio
-   	- Can review the project's source code
-   	- Can run the game in the IDE's Android Emulator
+### Installation
+1. Clone the repo: `git clone https://github.com/sagieinav/edu-vetrinator-game-android.git`
+2. Open the project in Android Studio.
+3. Add your Google Maps API Key to your `local.properties` or manifest.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-<!-- USAGE EXAMPLES -->
-## 7 Usage
+## Usage
 **How to Play:**
-- Controls: Use the left/right arrows to change lanes.
-- Goal: Avoid obstacles and survive as long as possible.
-- Game Over: In Normal Mode, the game ends when you run out of lives.
+- **Controls**: Use on-screen arrows or enable **Tilt Mode** in settings to move by tilting your device.
+- **Boost**: Tilt the device forward to increase speed.
+- **Goal**: Collect coins and avoid obstacles to survive as long as possible.
+- **Leaderboard**: View your rank and the map location of your best runs in the High Scores section.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-<!-- ROADMAP -->
-## 8 Roadmap
+## Roadmap
 
 - [x] App icon
 - [x] Game grid improvements
@@ -167,12 +127,11 @@ To get a local copy up and running follow these simple example steps.
 	- [x] `TiltDetector`
 	- [x] `VibrationManager`
 - [x] Change external custom callbacks from functions to inner interfaces
-- [ ] Implement Glide and ImageLoader for loading images
+- [x] Implement Glide and ImageLoader for loading images
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- CONTRIBUTORS -->
-## 9 Contributors
+## Contributors
 
 <div align="center">
 	<a href="https://github.com/sagieinav/edu-vetrinator-game-android/graphs/contributors">

@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:paddingVertical="8dp">
+    android:paddingVertical="@dimen/spacing_s">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fontFamily="@font/pixel_purl"
-        android:text="Controls"
+        android:text="@string/label_controls"
         android:textColor="@color/brown_george"
-        android:textSize="26sp" />
-
+        android:textSize="@dimen/text_size_medium" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:background="@drawable/switch_bg"
-        >
+        android:layout_height="@dimen/switch_height"
+        android:background="@drawable/bg_switch">
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch_controls"
@@ -31,19 +29,17 @@
             android:layout_centerVertical="true"
             android:checked="false"
             android:textColor="@color/white"
-            app:switchMinWidth="140dp"
+            app:switchMinWidth="@dimen/switch_width_standard"
             app:thumbTint="@null"
             app:trackTint="@null"
-            app:track="@drawable/switch_track_selector"
-            android:thumb="@drawable/switch_thumb_selector"
-            />
+            app:track="@drawable/bg_switch_track_selector"
+            android:thumb="@drawable/bg_switch_thumb_selector" />
 
         <LinearLayout
-            android:layout_width="140dp"
+            android:layout_width="@dimen/switch_width_standard"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:weightSum="2"
-            >
+            android:weightSum="2">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_buttons"
@@ -52,14 +48,13 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:text="BUTTONS"
+                android:text="@string/switch_buttons"
                 tools:textColor="@color/brown_george"
-                android:textColor="@drawable/switch_text_selector"
-                android:textSize="18sp"
+                android:textColor="@drawable/tv_switch"
+                android:textSize="@dimen/text_size_switch"
                 android:textStyle="bold"
                 android:fontFamily="@font/pixel_purl"
-                android:translationY="0.5dp"
-                />
+                android:translationY="0.5dp" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_tilt"
@@ -68,20 +63,14 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:text="TILT"
-                android:textColor="@drawable/switch_text_selector"
-                android:textSize="18sp"
+                android:text="@string/switch_tilt"
+                android:textColor="@drawable/tv_switch"
+                android:textSize="@dimen/text_size_switch"
                 android:textStyle="bold"
                 android:fontFamily="@font/pixel_purl"
-                tools:activated = "false"
+                tools:activated="false"
                 android:includeFontPadding="false"
-                android:translationY="0.5dp"
-                />
-
-
+                android:translationY="0.5dp" />
         </LinearLayout>
-
-
     </RelativeLayout>
-
 </LinearLayout>

@@ -4,28 +4,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="4dp"
-    app:cardElevation="2dp"
+    android:layout_marginHorizontal="@dimen/spacing_s"
+    android:layout_marginVertical="@dimen/spacing_xs"
+    app:cardElevation="@dimen/card_elevation_small"
     app:cardBackgroundColor="@color/offwhite"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="@dimen/row_corner_radius"
     app:strokeColor="@color/offwhite_stroke"
-    app:strokeWidth="1dp">
+    app:strokeWidth="@dimen/ui_card_stroke_width">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="@dimen/hearts_box_padding_h">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_record_rank"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/leaderboard_item_rank_width"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pixel_purl"
             android:text="#10"
             android:gravity="start|center_vertical"
             android:textColor="@color/brown_george"
-            android:textSize="32sp"
+            android:textSize="@dimen/pali_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,19 +34,18 @@
             android:id="@+id/tv_record_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/spacing_s"
+            android:layout_marginEnd="@dimen/spacing_m"
             android:fontFamily="@font/pixel_purl"
             android:text="PLAYER NAME"
             android:textColor="@color/brown_george"
-            android:textSize="32sp"
+            android:textSize="@dimen/pali_text_size"
             android:ellipsize="end"
             android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_record_score"
             app:layout_constraintStart_toEndOf="@id/tv_record_rank"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_record_score"
@@ -55,7 +54,7 @@
             android:fontFamily="@font/pixel_purl"
             android:text="000"
             android:textColor="@color/brown_george"
-            android:textSize="32sp"
+            android:textSize="@dimen/pali_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

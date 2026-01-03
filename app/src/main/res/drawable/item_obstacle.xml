@@ -4,5 +4,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scaleType="fitCenter"
-    srcCompat="@drawable/obstacle_eight_clubs" />
+    srcCompat="@drawable/img_obstacle_eight_clubs" />
 <!-- `obstacle_eight_hearts` acts as a default/placeholder src -->
