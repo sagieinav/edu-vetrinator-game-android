@@ -55,7 +55,7 @@ class GameGridRenderer(
             FrameLayout.LayoutParams.MATCH_PARENT,
             FrameLayout.LayoutParams.MATCH_PARENT
         )
-        playerView.scaleType = ImageView.ScaleType.FIT_CENTER
+        playerView.scaleType = ImageView.ScaleType.FIT_END
     }
 
     // === DRAW FUNCTIONS ===

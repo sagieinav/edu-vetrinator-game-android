@@ -1,10 +1,9 @@
 import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 }
-
-
 
 android {
     namespace = "dev.sagi.georgethevetrinator"
@@ -46,15 +45,6 @@ android {
         jvmTarget = "11"
     }
 
-    sourceSets {
-        getByName("main") {
-            res.srcDirs(
-                "src/main/res",
-                "src/main/res/layouts",
-                "src/main/res/layouts/game"
-            )
-        }
-    }
 }
 
 dependencies {
