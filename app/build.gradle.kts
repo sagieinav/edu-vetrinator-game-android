@@ -1,9 +1,11 @@
+import org.gradle.kotlin.dsl.support.kotlinCompilerOptions
 import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 }
+
 
 android {
     namespace = "dev.sagi.georgethevetrinator"
@@ -47,20 +49,20 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
+    buildFeatures {
+        viewBinding = true
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 }
 
 dependencies {
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
-    implementation("com.google.code.gson:gson:2.13.2")
+    implementation(libs.glide)
+    implementation(libs.play.services.maps)
+    implementation(libs.gson)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
