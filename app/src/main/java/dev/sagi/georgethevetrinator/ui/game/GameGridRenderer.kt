@@ -10,7 +10,7 @@ import dev.sagi.georgethevetrinator.R
 import dev.sagi.georgethevetrinator.model.entities.Entity
 import dev.sagi.georgethevetrinator.model.enums.EntityType
 import dev.sagi.georgethevetrinator.model.entities.Player
-import dev.sagi.georgethevetrinator.utilities.SignalImageLoader
+import dev.sagi.georgethevetrinator.services.SignalImageLoader
 
 class GameGridRenderer(
     private val context: Context,

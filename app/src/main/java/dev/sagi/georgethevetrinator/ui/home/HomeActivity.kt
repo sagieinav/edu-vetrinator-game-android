@@ -25,9 +25,6 @@ import com.google.android.material.textview.MaterialTextView
 class HomeActivity : AppCompatActivity() {
 //    ======================================== ATTRIBUTES ========================================
     // === SERVICES ===
-    private val audioManager by lazy {
-        (application as MyApp).audioManager
-    }
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->

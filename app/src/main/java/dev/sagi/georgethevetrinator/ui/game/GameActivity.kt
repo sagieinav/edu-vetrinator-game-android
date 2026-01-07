@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.GridLayout
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
@@ -26,12 +25,13 @@ import dev.sagi.georgethevetrinator.model.enums.GameDifficulty
 import dev.sagi.georgethevetrinator.model.enums.GameMode
 import dev.sagi.georgethevetrinator.model.enums.MoveDirection
 import dev.sagi.georgethevetrinator.model.entities.ScoreRecord
-import dev.sagi.georgethevetrinator.logic.TiltDetector
+import dev.sagi.georgethevetrinator.services.TiltDetector
 import dev.sagi.georgethevetrinator.utilities.Constants
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.textview.MaterialTextView
-import dev.sagi.georgethevetrinator.utilities.SignalImageLoader
+import dev.sagi.georgethevetrinator.services.SignalImageLoader
+import dev.sagi.georgethevetrinator.services.SignalManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -63,14 +63,14 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     private var startTime : Long = 0
 
     // === AUDIO MANAGER ===
-    private val audioManager by lazy {
-        (application as MyApp).audioManager
-    }
+//    private val audioManager by lazy {
+//        (application as MyApp).audioManager
+//    }
 
     // === VIBRATION MANAGER ===
-    private val vibrationManager by lazy {
-        (application as MyApp).vibrationManager
-    }
+//    private val vibrationManager by lazy {
+//        (application as MyApp).vibrationManager
+//    }
 
     // === TILT DETECTOR ===
     private lateinit var tiltDetector: TiltDetector
@@ -81,7 +81,8 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     // === TOAST ===
-    private var currentToast: Toast? = null
+//    private var currentToast: Toast? = null
+    private val signalManager = SignalManager.getInstance()
 
 
 //    ======================================== FUNCTIONS ========================================
@@ -131,14 +132,14 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
         gameGridRenderer.release()
     }
 
-    fun showToast(message: String) {
-        // Cancel the existing toast if it is currently showing
-        currentToast?.cancel()
-
-        // Create and show the new toast:
-        currentToast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        currentToast?.show()
-    }
+//    fun showToast(message: String) {
+//        // Cancel the existing toast if it is currently showing
+//        currentToast?.cancel()
+//
+//        // Create and show the new toast:
+//        currentToast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+//        currentToast?.show()
+//    }
 
 
     // === GAME INITIALIZATION ===
@@ -196,14 +197,15 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     }
 
     private fun handleObstacleHit() {
-        audioManager.playCrashSfx()
         val crashMsg = getString(gameManager.crashMsgResourceId)
-        showToast(crashMsg)
-        vibrationManager.vibrateShort()
+//        audioManager.playCrashSfx()
+//        showToast(crashMsg)
+        signalManager.notifyCollision(crashMsg)
+//        vibrationManager.vibrateShort()
     }
 
     private fun handleCoinCollected() {
-        audioManager.playCoinSfx()
+        signalManager.onCoinCollected()
         animateScoreCoin()
     }
 
@@ -230,9 +232,8 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     }
 
     private fun handleGameOver() {
-        vibrationManager.vibrateLong()
         timerJob?.cancel()
-        audioManager.startGameOverMusic()
+        signalManager.notifyGameOver()
         showGameOver() // Triggers `GameOverFragment`
     }
 
@@ -311,7 +312,7 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     }
     private fun triggerBoost() {
         isBoosting = true
-        audioManager.playBoostSfx()
+        signalManager.onBoostActivated()
         lastBoostTime = System.currentTimeMillis()
         gameManager.speedMultiplier = Constants.Sensor.BOOST_SPEED
 
@@ -403,7 +404,7 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     }
 
     override fun onRestartClicked() {
-        audioManager.startMusic()
+        signalManager.startMusic()
         // 1. Remove the GameOverFragment
         val fragment = supportFragmentManager.findFragmentById(R.id.game_fragment_container)
         if (fragment != null) {
@@ -423,7 +424,7 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     }
 
     override fun onHomeClicked() {
-        audioManager.startMusic()
+        signalManager.startMusic()
         finish()
     }
 }
