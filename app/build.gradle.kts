@@ -20,12 +20,22 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val properties = Properties()
-        val propertiesFile = project.rootProject.file("local.properties")
-        if (propertiesFile.exists()) {
-            properties.load(propertiesFile.inputStream())
+        // Maps API Key
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+
+        if (localPropertiesFile.exists()) {
+            localProperties.load(localPropertiesFile.inputStream())
         }
-        manifestPlaceholders["MAPS_API_KEY"] = properties.getProperty("MAPS_API_KEY")
+
+        val mapsApiKey: String? = localProperties.getProperty("MAPS_API_KEY")
+
+        if (mapsApiKey == null) {
+            logger.error("ERROR: MAPS_API_KEY not found in local.properties! Please add: MAPS_API_KEY={your_key}")
+        }
+        else {
+            manifestPlaceholders["MAPS_API_KEY"] = localProperties.getProperty("MAPS_API_KEY")
+        }
     }
 
     buildTypes {
