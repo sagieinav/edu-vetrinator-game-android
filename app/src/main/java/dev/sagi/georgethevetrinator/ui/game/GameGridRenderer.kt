@@ -1,6 +1,7 @@
 package dev.sagi.georgethevetrinator.ui.game
 
 import android.content.Context
+import android.graphics.Color
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.GridLayout
@@ -11,6 +12,7 @@ import dev.sagi.georgethevetrinator.model.entities.Entity
 import dev.sagi.georgethevetrinator.model.enums.EntityType
 import dev.sagi.georgethevetrinator.model.entities.Player
 import dev.sagi.georgethevetrinator.services.SignalImageLoader
+import kotlin.Array
 
 class GameGridRenderer(
     private val context: Context,
@@ -46,6 +48,7 @@ class GameGridRenderer(
         gridLayout.columnCount = cols
         initPlayer()
     }
+
     private fun initPlayer() {
         playerView = AppCompatImageView(context)
         // Set the image:

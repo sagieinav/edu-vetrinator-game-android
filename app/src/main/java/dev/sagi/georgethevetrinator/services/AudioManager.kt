@@ -1,5 +1,6 @@
 package dev.sagi.georgethevetrinator.services
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -8,7 +9,9 @@ import android.util.Log
 import dev.sagi.georgethevetrinator.R
 
 class AudioManager private constructor(private val context: Context) {
+    private val appContext = context.applicationContext
     companion object {
+        @SuppressLint("StaticFieldLeak")
         @Volatile private var instance: AudioManager? = null
         fun getInstance(context: Context): AudioManager =
             instance ?: synchronized(this) {
@@ -38,9 +41,9 @@ class AudioManager private constructor(private val context: Context) {
 
     init {
         // Load SFX into memory
-        soundCoin = soundPool.load(context, R.raw.sfx_coin, 1)
-        soundCrash = soundPool.load(context, R.raw.sfx_crash, 1)
-        soundBoost = soundPool.load(context, R.raw.sfx_boost, 1)
+        soundCoin = soundPool.load(appContext, R.raw.sfx_coin, 1)
+        soundCrash = soundPool.load(appContext, R.raw.sfx_crash, 1)
+        soundBoost = soundPool.load(appContext, R.raw.sfx_boost, 1)
 
         soundPool.setOnLoadCompleteListener { pool, sampleId, status ->
             // Status 0 means success
@@ -54,7 +57,7 @@ class AudioManager private constructor(private val context: Context) {
         mediaPlayer?.release()
 
         // 2. Initialize new track
-        mediaPlayer = MediaPlayer.create(context, resId).apply {
+        mediaPlayer = MediaPlayer.create(appContext, resId).apply {
             this.isLooping = isLooping
             setVolume(0.4f, 0.4f)
             start()

@@ -4,10 +4,10 @@ import android.content.Context
 import android.widget.Toast
 
 class SignalManager private constructor(context: Context) {
+    private val appContext = context.applicationContext
     private val audioManager = AudioManager.getInstance(context)
     private val vibrationManager = VibrationManager.getInstance(context)
     private var currentToast: Toast? = null
-    private val appContext = context.applicationContext
 
     companion object {
         @Volatile

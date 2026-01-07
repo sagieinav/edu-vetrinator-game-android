@@ -21,6 +21,8 @@ import dev.sagi.georgethevetrinator.model.enums.GameMode
 import dev.sagi.georgethevetrinator.ui.game.GameActivity
 import dev.sagi.georgethevetrinator.utilities.navigateToLeaderboards
 import com.google.android.material.textview.MaterialTextView
+import dev.sagi.georgethevetrinator.databinding.ActivityGameBinding
+import dev.sagi.georgethevetrinator.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
 //    ======================================== ATTRIBUTES ========================================
@@ -48,24 +50,31 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var tvButtons: MaterialTextView
     private lateinit var tvTilt: MaterialTextView
 
+    // === BINDING ===
+    private lateinit var binding: ActivityHomeBinding
+
 //    ======================================== FUNCTIONS ========================================
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_home)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_activity_home)) { v, insets ->
+
+        // 1. Binding
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // 1. Services & Permissions
+        // 2. Services & Permissions
         checkLocationPermissions()
 
-        // 2. Find views
+        // 3. Find views
         findViews()
 
-        // 3. Initialize viers
+        // 4. Initialize views
         initViews()
     }
 
@@ -91,25 +100,25 @@ class HomeActivity : AppCompatActivity() {
 
     // === FIND & INITIALIZE VIEWS
     private fun findViews() {
-        btnPlay = findViewById(R.id.btn_play)
-        btnLeaderboards = findViewById(R.id.btn_leaderboards)
+        btnPlay = binding.btnPlay
+        btnLeaderboards = binding.btnLeaderboards
 
-        switchMode = findViewById(R.id.switch_mode)
-        tvNormal = findViewById(R.id.tv_normal)
-        tvEndless = findViewById(R.id.tv_endless)
+        switchMode = binding.homeSettings.rowMode.switchMode
+        tvNormal = binding.homeSettings.rowMode.tvNormal
+        tvEndless = binding.homeSettings.rowMode.tvEndless
 
-        switchDifficulty = findViewById(R.id.switch_difficulty)
-        tvEasy = findViewById(R.id.tv_easy)
-        tvHard = findViewById(R.id.tv_hard)
+        switchDifficulty = binding.homeSettings.rowDifficulty.switchDifficulty
+        tvEasy = binding.homeSettings.rowDifficulty.tvEasy
+        tvHard = binding.homeSettings.rowDifficulty.tvHard
 
-        switchControls = findViewById(R.id.switch_controls)
-        tvButtons = findViewById(R.id.tv_buttons)
-        tvTilt = findViewById(R.id.tv_tilt)
+        switchControls = binding.homeSettings.rowControls.switchControls
+        tvButtons = binding.homeSettings.rowControls.tvButtons
+        tvTilt = binding.homeSettings.rowControls.tvTilt
     }
 
     private fun initViews() {
         btnPlay.setOnClickListener { view: View -> startGame() }
-        btnLeaderboards.setOnClickListener { navigateToLeaderboards(R.id.home_fragment_container) }
+        btnLeaderboards.setOnClickListener { navigateToLeaderboards(binding.homeFragmentContainer.id) }
         initSwitches()
     }
 

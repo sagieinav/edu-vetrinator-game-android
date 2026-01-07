@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import dev.sagi.georgethevetrinator.R
+import dev.sagi.georgethevetrinator.databinding.FragmentLeaderboardsWrapperBinding
 import dev.sagi.georgethevetrinator.interfaces.Callback_HighScoreClicked
 
 class LeaderboardsWrapperFragment : Fragment() {
@@ -14,10 +15,24 @@ class LeaderboardsWrapperFragment : Fragment() {
     private lateinit var highScoresFragment: HighScoresFragment
     private lateinit var mapFragment: MapFragment
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_leaderboards_wrapper, container, false)
+    private var _binding: FragmentLeaderboardsWrapperBinding? = null
+    private val binding get() = _binding!!
 
-        // Initialize child fragments
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentLeaderboardsWrapperBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupChildFragments()
+    }
+
+    private fun setupChildFragments() {
         highScoresFragment = HighScoresFragment()
         mapFragment = MapFragment()
 
@@ -28,12 +43,15 @@ class LeaderboardsWrapperFragment : Fragment() {
             }
         })
 
-        // Use childFragmentManager to inflate them
+        // Use binding to reference the container IDs
         childFragmentManager.beginTransaction()
-            .replace(R.id.list_child_container, highScoresFragment)
-            .replace(R.id.map_child_container, mapFragment)
+            .replace(binding.listChildContainer.id, highScoresFragment)
+            .replace(binding.mapChildContainer.id, mapFragment)
             .commit()
+    }
 
-        return view
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

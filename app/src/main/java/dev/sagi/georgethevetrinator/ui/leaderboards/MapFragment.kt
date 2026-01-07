@@ -11,20 +11,29 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import dev.sagi.georgethevetrinator.databinding.FragmentMapBinding
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private var googleMap: GoogleMap? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout with the SupportMapFragment
-        val view = inflater.inflate(R.layout.fragment_map, container, false)
+    private var _binding: FragmentMapBinding? = null
+    private val binding get() = _binding!!
 
-        // Find the map fragment and start it
-        val mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMapBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        return view
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val mapFragment = childFragmentManager.findFragmentById(binding.googleMap.id) as? SupportMapFragment
+        mapFragment?.getMapAsync(this)
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -33,33 +42,30 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     fun refreshMarkers() {
-        // 1. Fetch scores from your manager
+        // 1. Fetch scores from the repository and clear map (safety layer)
         val scores = (requireActivity().application as MyApp).scoreRepository.getTopScores()
-
-        // 2. Clear any existing markers just in case
         googleMap?.clear()
 
-        // 3. Add a marker for every score in the list
+        // 2. Add a marker for every score in the list
         for (score in scores) {
             val position = LatLng(score.latitude, score.longitude)
             googleMap?.addMarker(
                 MarkerOptions()
                     .position(position)
-                    .title(score.playerName) // Shows name when clicked
-                    .snippet("Score: ${score.score}") // Shows score below name
+                    .title(score.playerName)
+                    .snippet("Score: ${score.score}")
             )
-        }
-
-        // 4. Zoom to the #1 rank location initially
-        if (scores.isNotEmpty()) {
-            val topScorePos = LatLng(scores[0].latitude, scores[0].longitude)
-            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(topScorePos, 5f))
         }
     }
 
     fun zoomToLocation(lat: Double, lon: Double) {
         val location = LatLng(lat, lon)
-        // animateCamera provides a smooth gliding effect
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // 4. Nullify binding to prevent memory leaks
+        _binding = null
     }
 }

@@ -8,9 +8,14 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
 import dev.sagi.georgethevetrinator.R
 import com.google.android.material.textview.MaterialTextView
+import dev.sagi.georgethevetrinator.databinding.ActivityGameBinding
+import dev.sagi.georgethevetrinator.databinding.FragmentGameOverBinding
 
 class GameOverFragment(): Fragment() {
-//    ======================================== NEW INSTANCE CONSTRUCTOR PATTERN ========================================
+    private var _binding: FragmentGameOverBinding? = null
+    private val binding get() = _binding!!
+
+    //    ======================================== NEW INSTANCE CONSTRUCTOR PATTERN ========================================
     companion object {
         fun newInstance(score: Int): GameOverFragment {
             val fragment = GameOverFragment()
@@ -49,26 +54,31 @@ class GameOverFragment(): Fragment() {
     override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
-    ): View? {
-        val view: View = inflater.inflate(
-            R.layout.fragment_game_over,
-            container,
-            false
-        )
-        findViews(view)
-        initViews(view)
-        return view
+    ): View {
+        _binding = FragmentGameOverBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    private fun findViews(view: View) {
-        btnSaveScore = view.findViewById(R.id.btn_save_score)
-        btnRestart = view.findViewById(R.id.btn_restart)
-        btnBackHome = view.findViewById(R.id.btn_back_home)
-        tvResultScore = view.findViewById(R.id.tv_result_score)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        findViews()
+        initViews()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun findViews() {
+        btnSaveScore = binding.btnSaveScore
+        btnRestart = binding.btnRestart
+        btnBackHome = binding.btnBackHome
+        tvResultScore = binding.resultScore.tvResultScore
     }
 
 
-    private fun initViews(view: View) {
+    private fun initViews() {
         // Get the score from arguments
         finalScore = arguments?.getInt("SCORE_KEY") ?: 0
         tvResultScore.text = finalScore.toString()
@@ -77,5 +87,4 @@ class GameOverFragment(): Fragment() {
         btnBackHome.setOnClickListener { listener?.onHomeClicked() }
         btnSaveScore.setOnClickListener { listener?.onSaveClicked(finalScore) }
     }
-
 }

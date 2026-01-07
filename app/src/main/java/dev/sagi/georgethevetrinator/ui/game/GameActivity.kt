@@ -30,6 +30,7 @@ import dev.sagi.georgethevetrinator.utilities.Constants
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.textview.MaterialTextView
+import dev.sagi.georgethevetrinator.databinding.ActivityGameBinding
 import dev.sagi.georgethevetrinator.services.SignalImageLoader
 import dev.sagi.georgethevetrinator.services.SignalManager
 import kotlinx.coroutines.Job
@@ -62,15 +63,8 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     private var timerJob: Job? = null
     private var startTime : Long = 0
 
-    // === AUDIO MANAGER ===
-//    private val audioManager by lazy {
-//        (application as MyApp).audioManager
-//    }
-
-    // === VIBRATION MANAGER ===
-//    private val vibrationManager by lazy {
-//        (application as MyApp).vibrationManager
-//    }
+    // === SIGNAL MANAGER ===
+    private val signalManager = SignalManager.getInstance()
 
     // === TILT DETECTOR ===
     private lateinit var tiltDetector: TiltDetector
@@ -79,24 +73,25 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
 
     // === LOCATION ===
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    // === BINDING ===
+    private lateinit var binding: ActivityGameBinding
 
-    // === TOAST ===
-//    private var currentToast: Toast? = null
-    private val signalManager = SignalManager.getInstance()
-
-
-//    ======================================== FUNCTIONS ========================================
+    //    ======================================== FUNCTIONS ========================================
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_game)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_activity_game)) { v, insets ->
+
+        // 1. Binding:
+        binding = ActivityGameBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // 1. Initialize services
+        // 2. Services:
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         tiltDetector = TiltDetector(
             this,
@@ -104,10 +99,10 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
             onFlick = { triggerBoost() }
         )
 
-        // 2. Find views
+        // 3. Find views
         findViews()
 
-        // 3. Initialize game and its views
+        // 4. Initialize game and its views
         initGame()
         initViews()
     }
@@ -131,15 +126,6 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
         // Clean up the grid renderer to prevent memory leaks
         gameGridRenderer.release()
     }
-
-//    fun showToast(message: String) {
-//        // Cancel the existing toast if it is currently showing
-//        currentToast?.cancel()
-//
-//        // Create and show the new toast:
-//        currentToast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-//        currentToast?.show()
-//    }
 
 
     // === GAME INITIALIZATION ===
@@ -198,10 +184,7 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
 
     private fun handleObstacleHit() {
         val crashMsg = getString(gameManager.crashMsgResourceId)
-//        audioManager.playCrashSfx()
-//        showToast(crashMsg)
         signalManager.notifyCollision(crashMsg)
-//        vibrationManager.vibrateShort()
     }
 
     private fun handleCoinCollected() {
@@ -254,21 +237,21 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
 
     // === VIEWS (FIND, INIT, REFRESH) ===
     private fun findViews() {
-        gridView = findViewById(R.id.grid_game_board)
-        btnMoveLeft = findViewById(R.id.btn_move_left)
-        btnMoveRight = findViewById(R.id.btn_move_right)
-        tvScore = findViewById(R.id.tv_score)
+        gridView = binding.gridGameBoard
+        btnMoveLeft = binding.layoutControls.btnMoveLeft
+        btnMoveRight = binding.layoutControls.btnMoveRight
+        tvScore = binding.layoutHud.tvScore
         viewHearts = arrayOf(
-            findViewById(R.id.iv_heart1),
-            findViewById(R.id.iv_heart2),
-            findViewById(R.id.iv_heart3)
+            binding.layoutHud.ivHeart1,
+            binding.layoutHud.ivHeart2,
+            binding.layoutHud.ivHeart3
         )
-        ivBoostIndicator = findViewById(R.id.iv_boost_indicator)
+        ivBoostIndicator = binding.layoutHud.ivBoostIndicator
     }
 
     private fun initViews() {
         if (gameControls == GameControls.TILT) {
-            findViewById<View>(R.id.layout_controls).visibility = View.GONE
+            binding.layoutControls.root.visibility = View.GONE
             // initSensor() already been called in onCreate
         }
         else {
@@ -359,7 +342,7 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
             .beginTransaction()
             .setCustomAnimations(android.R.anim.fade_in,
                 android.R.anim.fade_out)
-            .replace(R.id.game_fragment_container, gameOverFragment)
+            .replace(binding.gameFragmentContainer.id, gameOverFragment)
             .commit()
     }
 
@@ -377,7 +360,7 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
                 android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right
             )
-            .replace(R.id.game_fragment_container, registerFragment)
+            .replace(binding.gameFragmentContainer.id, registerFragment)
             .addToBackStack(null) // Allows "Cancel" to work via popBackStack
             .commit()
     }
@@ -406,7 +389,7 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     override fun onRestartClicked() {
         signalManager.startMusic()
         // 1. Remove the GameOverFragment
-        val fragment = supportFragmentManager.findFragmentById(R.id.game_fragment_container)
+        val fragment = supportFragmentManager.findFragmentById(binding.gameFragmentContainer.id)
         if (fragment != null) {
             supportFragmentManager.beginTransaction()
                 .remove(fragment)

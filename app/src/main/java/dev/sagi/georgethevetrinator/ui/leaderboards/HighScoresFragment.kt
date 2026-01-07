@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.sagi.georgethevetrinator.MyApp
 import dev.sagi.georgethevetrinator.R
+import dev.sagi.georgethevetrinator.databinding.FragmentHighScoresBinding
 import dev.sagi.georgethevetrinator.interfaces.Callback_HighScoreClicked
 import dev.sagi.georgethevetrinator.ui.adapters.ScoreAdapter
 
 class HighScoresFragment : Fragment() {
 
     private var callback: Callback_HighScoreClicked? = null
+    private var _binding: FragmentHighScoresBinding? = null
+    private val binding get() = _binding!!
 
     fun setHighScoreCallback(callback: Callback_HighScoreClicked) {
         this.callback = callback
@@ -23,20 +26,33 @@ class HighScoresFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_high_scores, container, false)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_leaderboard)
+    ): View {
+        _binding = FragmentHighScoresBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Fetch the scores using our ScoreManager
-        val scoreManager = (requireActivity().application as MyApp).scoreRepository
-        val topScores = scoreManager.getTopScores()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+    }
 
-        // Pass the callback to the adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = ScoreAdapter(topScores) { record ->
-            callback?.onLeaderboardsItemClicked(record.latitude, record.longitude)
+    private fun setupRecyclerView() {
+        // Fetch the scores using the score repository
+        val scoreRepository = (requireActivity().application as MyApp).scoreRepository
+        val topScores = scoreRepository.getTopScores()
+
+        // Access RecyclerView from the binding
+        binding.rvLeaderboard.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = ScoreAdapter(topScores) { record ->
+                callback?.onLeaderboardsItemClicked(record.latitude, record.longitude)
+            }
         }
+    }
 
-        return view
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // 5. CRITICAL: Null out the binding to avoid memory leaks
+        _binding = null
     }
 }
