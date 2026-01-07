@@ -55,6 +55,14 @@ The game is built using Kotlin in Android Studio and features a custom grid-base
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## Demonstration
+
+https://github.com/user-attachments/assets/f19ff3dd-2ea1-4fd9-8e2f-d1c5bf54c58e
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
 ## Key Features
 - **Dynamic Control Systems**: Toggle between classic button-based navigation and an immersive **Tilt Sensor (Accelerometer)** mode.
 - **Persistent Leaderboard**: Tracks the top 10 scores locally using SharedPreferences, recording player names, scores, and physical locations.
@@ -65,12 +73,6 @@ The game is built using Kotlin in Android Studio and features a custom grid-base
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-## Demonstration
-
-https://github.com/user-attachments/assets/f19ff3dd-2ea1-4fd9-8e2f-d1c5bf54c58e
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 ## Structure
