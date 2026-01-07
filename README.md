@@ -44,8 +44,8 @@ The game is built using Kotlin in Android Studio and features a custom grid-base
       <td align="center"><img src="https://github.com/user-attachments/assets/b5edb66e-ac11-47c2-9f8e-7df00271c3c0" width="250" /></td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/user-attachments/assets/4d9c2989-a7ef-4291-b5b9-94392faf4449" width="250" /></td>
-      <td align="center"><img src="https://github.com/user-attachments/assets/3edb2604-ff1a-4bc5-85f2-b1b62cb8328c" width="250" /></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/d8f87b80-b631-42f6-bb59-79f3644fe6cd" width="250" /></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/1b0f458d-1d34-45c3-9409-d338e2f41dba" width="250" /></td>
       <td align="center"><img src="https://github.com/user-attachments/assets/8f33fb8d-d527-4f32-8de6-0e71494e6dc1" width="250" /></td>
     </tr>
   </table>
@@ -65,6 +65,14 @@ The game is built using Kotlin in Android Studio and features a custom grid-base
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+## Demonstration
+
+https://github.com/user-attachments/assets/f19ff3dd-2ea1-4fd9-8e2f-d1c5bf54c58e
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 ## Structure
 The project utilizes a feature-layered package structure to separate concerns and improve maintainability:
 
@@ -81,16 +89,6 @@ The project utilizes a feature-layered package structure to separate concerns an
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-## Demonstration
-
-https://github.com/user-attachments/assets/fbf5c029-22ac-4165-a999-15e18e41ee94
-
-
-
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
 
