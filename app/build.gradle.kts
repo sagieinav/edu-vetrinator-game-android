@@ -7,6 +7,10 @@ plugins {
 }
 
 
+kotlin {
+    jvmToolchain(17)
+}
+
 android {
     namespace = "dev.sagi.georgethevetrinator"
     compileSdk {
