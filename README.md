@@ -34,6 +34,27 @@ The game is built using Kotlin in Android Studio and features a custom grid-base
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+## Screenshots
+<div align="center">
+  <table style="width:100%">
+    <tr>
+      <td align="center"><img src="https://github.com/user-attachments/assets/c0938090-77f7-474e-b32f-505f1eca87cd" width="250" /></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/1e3a4f45-2820-4dd4-940c-0cdb2347c532" width="250" /></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/b5edb66e-ac11-47c2-9f8e-7df00271c3c0" width="250" /></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="https://github.com/user-attachments/assets/4d9c2989-a7ef-4291-b5b9-94392faf4449" width="250" /></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/3edb2604-ff1a-4bc5-85f2-b1b62cb8328c" width="250" /></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/8f33fb8d-d527-4f32-8de6-0e71494e6dc1" width="250" /></td>
+    </tr>
+  </table>
+</div>
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 ## Key Features
 - **Dynamic Control Systems**: Toggle between classic button-based navigation and an immersive **Tilt Sensor (Accelerometer)** mode.
 - **Persistent Leaderboard**: Tracks the top 10 scores locally using SharedPreferences, recording player names, scores, and physical locations.
