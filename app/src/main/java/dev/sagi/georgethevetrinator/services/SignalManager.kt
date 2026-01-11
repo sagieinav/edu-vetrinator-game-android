@@ -3,27 +3,12 @@ package dev.sagi.georgethevetrinator.services
 import android.content.Context
 import android.widget.Toast
 
-class SignalManager private constructor(context: Context) {
+class SignalManager(context: Context) {
+
     private val appContext = context.applicationContext
-    private val audioManager = AudioManager.getInstance(context)
-    private val vibrationManager = VibrationManager.getInstance(context)
+    private val audioManager = AudioManager(appContext)
+    private val vibrationManager = VibrationManager(appContext)
     private var currentToast: Toast? = null
-
-    companion object {
-        @Volatile
-        private var instance: SignalManager? = null
-
-        fun init(context: Context): SignalManager {
-            return instance ?: synchronized(this) {
-                instance ?: SignalManager(context).also { instance = it }
-            }
-        }
-
-        fun getInstance(): SignalManager {
-            return instance ?: throw IllegalStateException("SignalManager must be initialized in MyApp")
-        }
-    }
-
     fun showToast(message: String) {
         // Cancel the existing toast if it is currently showing
         currentToast?.cancel()

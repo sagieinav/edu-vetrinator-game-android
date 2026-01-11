@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.GridLayout
 import androidx.activity.enableEdgeToEdge
@@ -27,15 +26,10 @@ import dev.sagi.georgethevetrinator.model.enums.MoveDirection
 import dev.sagi.georgethevetrinator.model.entities.ScoreRecord
 import dev.sagi.georgethevetrinator.services.TiltDetector
 import dev.sagi.georgethevetrinator.utilities.Constants
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.textview.MaterialTextView
 import dev.sagi.georgethevetrinator.databinding.ActivityGameBinding
-import dev.sagi.georgethevetrinator.services.SignalImageLoader
-import dev.sagi.georgethevetrinator.services.SignalManager
-import kotlinx.coroutines.Job
+import dev.sagi.georgethevetrinator.services.GameTimer
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
@@ -59,24 +53,22 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     private lateinit var btnMoveLeft: AppCompatImageButton
     private lateinit var btnMoveRight: AppCompatImageButton
 
-    // === TIMER ===
-    private var timerJob: Job? = null
-    private var startTime : Long = 0
+    // === APPLICATION SERVICES ===
+    private val signalManager get() = (application as MyApp).signalManager
+    private val scoreRepository get() = (application as MyApp).scoreRepository
+    private val locationService get() = (application as MyApp).locationService
+    private val imageLoader get() = (application as MyApp).imageLoader
 
-    // === SIGNAL MANAGER ===
-    private val signalManager = SignalManager.getInstance()
-
-    // === TILT DETECTOR ===
+    // === GAME SERVICES ===
+    private lateinit var gameTimer: GameTimer
     private lateinit var tiltDetector: TiltDetector
     private var isBoosting = false
     private var lastBoostTime: Long = 0
 
-    // === LOCATION ===
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
     // === BINDING ===
     private lateinit var binding: ActivityGameBinding
 
-    //    ======================================== FUNCTIONS ========================================
+//    ======================================== FUNCTIONS ========================================
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -91,13 +83,15 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
             insets
         }
 
-        // 2. Services:
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        // 2. Game Services:
         tiltDetector = TiltDetector(
             this,
             onTilt = { direction -> movementInitiated(direction) },
             onFlick = { triggerBoost() }
         )
+        gameTimer = GameTimer(lifecycleScope) {
+            advanceGame()
+        }
 
         // 3. Find views
         findViews()
@@ -109,7 +103,13 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
 
     override fun onResume() {
         super.onResume()
-        startTimer()
+        val baseDelay = if (gameDifficulty == GameDifficulty.EASY)
+            Constants.Timer.DELAY_EASY else Constants.Timer.DELAY_HARD
+
+        gameTimer.start {
+            (baseDelay / gameManager.speedMultiplier).toLong()
+        }
+
         if (gameControls == GameControls.TILT) {
             tiltDetector.start()
         }
@@ -117,7 +117,7 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
 
     override fun onPause() {
         super.onPause()
-        timerJob?.cancel()
+        gameTimer.stop()
         tiltDetector.stop()
     }
 
@@ -215,25 +215,11 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     }
 
     private fun handleGameOver() {
-        timerJob?.cancel()
+        gameTimer.stop()
         signalManager.notifyGameOver()
         showGameOver() // Triggers `GameOverFragment`
     }
 
-
-    // === TIMER ===
-    private fun startTimer() {
-        startTime = System.currentTimeMillis()
-        val baseDelay = if (gameDifficulty == GameDifficulty.EASY) Constants.Timer.DELAY_EASY else Constants.Timer.DELAY_HARD
-        timerJob = lifecycleScope.launch {
-            while (isActive) {
-                val dynamicDelay = (baseDelay / gameManager.speedMultiplier).toLong()
-                Log.d("GameLoop", "Tick!")
-                delay(dynamicDelay)
-                advanceGame()
-            }
-        }
-    }
 
     // === VIEWS (FIND, INIT, REFRESH) ===
     private fun findViews() {
@@ -260,7 +246,12 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
         }
 
         // gameGridRenderer will find and init all game board views:
-        gameGridRenderer = GameGridRenderer(this, gridView, ROWS, COLS)
+        gameGridRenderer = GameGridRenderer(
+            this,
+            gridView,
+            ROWS,
+            COLS,
+            imageLoader)
 
         refreshUI()
     }
@@ -279,10 +270,10 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
     private fun updateLivesUI() {
         for (i in viewHearts.indices) {
             if (i < gameManager.currentHealth) {
-                SignalImageLoader.getInstance().loadImage(R.drawable.ic_heart, viewHearts[i])
+                imageLoader.loadImage(R.drawable.ic_heart, viewHearts[i])
             }
             else {
-                SignalImageLoader.getInstance().loadImage(R.drawable.ic_heart_empty, viewHearts[i])
+                imageLoader.loadImage(R.drawable.ic_heart_empty, viewHearts[i])
             }
         }
     }
@@ -367,23 +358,23 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
 
 
     override fun onScoreRegistered(score: Int, name: String) {
-        // Check for permissions before requesting location
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                val lat = location?.latitude ?: 0.0
-                val lon = location?.longitude ?: 0.0
-
+        if (hasLocationPermission()) {
+            locationService.getCurrentLocation { lat, lon ->
                 val newRecord = ScoreRecord(name, score, lat, lon)
-                (application as MyApp).scoreRepository.saveScore(newRecord)
-                Log.d("LOCATION_DEBUG", "Saved with: $lat, $lon")
+                scoreRepository.saveScore(newRecord)
             }
         } else {
-            // If no permission, save with 0.0, 0.0
-            val newRecord = ScoreRecord(name, score)
-            (application as MyApp).scoreRepository.saveScore(newRecord)
-            Log.d("LOCATION_DEBUG", "No permission!")
+            val newRecord = ScoreRecord(name, score, 0.0, 0.0)
+            scoreRepository.saveScore(newRecord)
         }
+
         onHomeClicked()
+    }
+
+    private fun hasLocationPermission(): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this, android.Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onRestartClicked() {
@@ -402,8 +393,13 @@ class GameActivity : AppCompatActivity(), GameOverFragment.GameOverListener {
         // 3. Clear the UI
         refreshUI()
 
-        // 4. Restart the loop
-        startTimer()
+        // 4. Restart the timer
+        val baseDelay = if (gameDifficulty == GameDifficulty.EASY)
+            Constants.Timer.DELAY_EASY else Constants.Timer.DELAY_HARD
+
+        gameTimer.start {
+            (baseDelay / gameManager.speedMultiplier).toLong()
+        }
     }
 
     override fun onHomeClicked() {

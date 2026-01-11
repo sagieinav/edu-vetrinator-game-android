@@ -1,7 +1,6 @@
 package dev.sagi.georgethevetrinator.ui.game
 
 import android.content.Context
-import android.graphics.Color
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.GridLayout
@@ -11,18 +10,20 @@ import dev.sagi.georgethevetrinator.R
 import dev.sagi.georgethevetrinator.model.entities.Entity
 import dev.sagi.georgethevetrinator.model.enums.EntityType
 import dev.sagi.georgethevetrinator.model.entities.Player
-import dev.sagi.georgethevetrinator.services.SignalImageLoader
+import dev.sagi.georgethevetrinator.services.ImageLoader
 import kotlin.Array
 
 class GameGridRenderer(
     private val context: Context,
     private val gridLayout: GridLayout,
     private val rows: Int,
-    private val cols: Int
+    private val cols: Int,
+    private val imageLoader: ImageLoader
 ) {
 //    ======================================== ATTRIBUTES ========================================
     // === LINKED VIEWS (DYNAMIC) ===
     private lateinit var playerView: AppCompatImageView
+
 
     // MATRIX OF EMPTY CELLS (the "game board"). Initialize on declaration, for having it as val
     private val cells: Array<Array<FrameLayout>> = Array(rows) { row ->
@@ -52,7 +53,7 @@ class GameGridRenderer(
     private fun initPlayer() {
         playerView = AppCompatImageView(context)
         // Set the image:
-        SignalImageLoader.getInstance().loadImage(R.drawable.img_player_george, playerView)
+        imageLoader.loadImage(R.drawable.img_player_george, playerView)
         // Set width and height to match the matrix's cell:
         playerView.layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
@@ -98,7 +99,7 @@ class GameGridRenderer(
         }
 
         // Set the drawable resource:
-        SignalImageLoader.getInstance().loadImage(type.drawableResourceId, view)
+        imageLoader.loadImage(type.drawableResourceId, view)
 
         usedObstacles.add(view) // Track it for recycling it in next frame
         return view

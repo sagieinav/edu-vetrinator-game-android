@@ -8,17 +8,8 @@ import android.media.SoundPool
 import android.util.Log
 import dev.sagi.georgethevetrinator.R
 
-class AudioManager private constructor(private val context: Context) {
+class AudioManager (context: Context) {
     private val appContext = context.applicationContext
-    companion object {
-        @SuppressLint("StaticFieldLeak")
-        @Volatile private var instance: AudioManager? = null
-        fun getInstance(context: Context): AudioManager =
-            instance ?: synchronized(this) {
-                instance ?: AudioManager(context.applicationContext).also { instance = it }
-            }
-    }
-
     private var currentTrackResId: Int = -1
     private var mediaPlayer: MediaPlayer? = null
     private val soundPool: SoundPool = SoundPool.Builder()

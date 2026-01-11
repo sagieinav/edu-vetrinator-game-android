@@ -6,23 +6,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import dev.sagi.georgethevetrinator.R
 
-class SignalImageLoader private constructor(context: Context) {
+class ImageLoader(context: Context) {
     private val appContext = context.applicationContext
-
-    companion object {
-        @Volatile
-        private var instance: SignalImageLoader? = null
-
-        fun init(context: Context): SignalImageLoader {
-            return instance ?: synchronized(this) {
-                instance ?: SignalImageLoader(context).also { instance = it }
-            }
-        }
-
-        fun getInstance(): SignalImageLoader {
-            return instance ?: throw IllegalStateException("SignalImageLoader must be initialized in MyApp!")
-        }
-    }
 
     fun loadImage(url: String, imageView: ImageView) {
         Glide.with(appContext)
